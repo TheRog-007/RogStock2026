@@ -1,13 +1,17 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Data.SqlTypes;
-using RogStock2025.Screens;
+using RogStock2026.Screens;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 /*
@@ -22,7 +26,7 @@ using System.Windows.Forms;
   handles GUI manipulation
 
 */
-namespace RogStock2025.Modules
+namespace RogStock2026.Modules
 {
     internal static class clsView
     {
@@ -189,22 +193,11 @@ namespace RogStock2025.Modules
             public static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
         }
 
-        /*
-          in forms in mousedown event paste this:
+        //for drawing
+        static Brush bruTemp;
 
-            //if pointer inside "title bar"
-            if (e.Y <= Modules.clsView.CNST_INT_TITLEBARHEIGHT)
-            {
-                if (e.Button == MouseButtons.Left)
-                {
-                    //move form
-                    Modules.clsView.User32_DLL.ReleaseCapture();
-                    Modules.clsView.User32_DLL.SendMessage(this.Handle, Modules.clsView.WM_NCLBUTTONDOWN, (IntPtr)Modules.clsView.HTCAPTION, new IntPtr(0));
-                }
-            }
-        }
 
-        */
+ 
 
 
         //************* internal class for colour "theme"
@@ -344,9 +337,9 @@ namespace RogStock2025.Modules
                     //split by: ,
                     aryTemp = strTemp.Split(',');
 
-                    aryThemeColours[intAryPos, 0, 0] = aryTemp[0];
-                    aryThemeColours[0, intAryPos, 0] = aryTemp[1];
-                    aryThemeColours[0, 0, intAryPos] = aryTemp[2];
+                    aryThemeColours[intAryPos, 0, 0] = aryTemp[0].Trim();
+                    aryThemeColours[0, intAryPos, 0] = aryTemp[1].Trim();
+                    aryThemeColours[0, 0, intAryPos] = aryTemp[2].Trim();
                     intAryPos++;
                 }
 
@@ -814,6 +807,9 @@ namespace RogStock2025.Modules
                 MNUTemp = (MenuStrip)PANTemp.Controls["MNUMainMenu"];
                 MNUTemp.Items["MNUArrangeWindows"].Visible = false;
             }
+
+            //clear main forms current cycle label
+            frmMainForm.Controls["PANCycle"].Controls["LBLCycle"].Text = string.Empty;
         }
         public static void AddToOpenForms(string strText)
         {
@@ -1060,8 +1056,6 @@ namespace RogStock2025.Modules
             if (frmTemp != null)
             {
                 frmTemp.MdiParent = frmMainForm;
-                //add to open form menu
-                AddToOpenForms(frmTemp.Text);
                 //hide menu
                 BTNTemp = (Button)frmMainForm.Controls["BTNShowHide"];
                 BTNTemp.PerformClick();
@@ -1075,6 +1069,8 @@ namespace RogStock2025.Modules
                 frmTemp.Top = 50;
                 frmTemp.Visible = true;
                 SetTheme(frmTemp, aryThemeColours);
+                //add to open form menu
+                AddToOpenForms(frmTemp.Controls["PANTitle"].Controls["LBLTitle"].Text);
             }
         }
 
@@ -1522,7 +1518,10 @@ namespace RogStock2025.Modules
                 {
                     if (ctlTemp.Name != strFirstControl && ctlTemp.Name != "BTNNew" && ctlTemp.Name != "BTNClose")
                     {
-                        ctlTemp.Enabled = blnEnable;
+                        if (ctlTemp.Name != strFirstControl && ctlTemp.Name != "BTNClose" && ctlTemp.Name != "PANTitle")
+                        {
+                            ctlTemp.Enabled = blnEnable;
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -1859,9 +1858,66 @@ namespace RogStock2025.Modules
             }
         }
 
+        public static void SetFormTitle(Form frmWhat)
+        {
+            /*
+                Created 05/03/2026 By Roger Williams
+
+                Sets form title from clsdata->dicFormTitles
+
+                puts text into PANTitle->LBLTitle
+
+            */
+
+            string strTemp = string.Empty;
+
+            Modules.clsTables.dicFormTitles.TryGetValue(frmWhat.Name, out strTemp);
+         
+            if (strTemp != string.Empty) 
+            {
+                frmWhat.Controls["PANTitle"].Controls["LBLTitle"].Text = strTemp;
+            }
+        }
+        
+
+        public static void FillTitleBar(Graphics graWhat, Color clrColour, int intX, int intLength, int intY)
+        {
+            /*
+              Created 03/03/2026 By Roger Williams
+
+              fills titlebar with passed colour
+
+              VARS
+
+              graWhat   - where to draw
+              clrColour - colour to use
+              intX      - start from
+              intLength - how long?
+              intY      _ how high
+
+
+            */
+
+            bruTemp = new SolidBrush(clrColour);
+            graWhat.FillRectangle(bruTemp, intX, 0, intLength,intY);
+        }
+
         public static void SetFormCaptions(Form frmWhat, string strTable)
         {
             /*
+             Modified 12/03/2026 By Roger Williams
+            
+             uses: lstTableInfo instead of dictionary
+
+             tried to use the lists FIND method but it refsued to find items in the list (thanks Microsoft)
+             so had to slum with a foreach...
+            
+            
+             Modified 05/03/2026 By Roger Williams
+
+             Now also sets form caption
+
+            
              Created 03/03/2026 By Roger Williams
 
              sets label control text on passed form to SQL column descrptions
@@ -1887,79 +1943,320 @@ namespace RogStock2025.Modules
              strTable       - table to get descriptions from
 
             */
+
             string strTemp = string.Empty;
             string strResult = string.Empty;
-            Dictionary<string,string> DICTDesc=new Dictionary<string,string>();
 
-            void GetSQLColumnDescriptions()
-            /*
-              Created 02/03/2026 By Roger Williams
-
-              Copied and adapted from CoPilot
-
-              unusually for CoPilot this actually works, so far it have been right 1/5 questions!
-
-            */
-
+            foreach (Control ctlTemp in frmWhat.Controls)
             {
-                using (var SQLConn = new SqlConnection(Modules.clsData.CNST_STR_ODBC))
-                using (var SQLCmd = new SqlCommand(@"
-                    SELECT 
-                        c.name AS ColumnName,
-                        ep.value AS Description
-                    FROM sys.columns c
-                    LEFT JOIN sys.extended_properties ep 
-                        ON ep.major_id = c.object_id
-                        AND ep.minor_id = c.column_id
-                        AND ep.name = 'MS_Description'
-                    WHERE c.object_id = OBJECT_ID(@tableName)
-                    ORDER BY c.column_id;", SQLConn))
+                if (ctlTemp is Label)
                 {
-                    SQLCmd.Parameters.AddWithValue("@tableName", "dbo."+strTable);
-                    SQLConn.Open();
+                    strTemp = ctlTemp.Name.Substring(3, ctlTemp.Name.Length - 3);
 
-                    using (var reader = SQLCmd.ExecuteReader())
+                    foreach (Modules.clsData.TTYPETableInfo typInfo in Modules.clsData.lstTableInfo)
                     {
-                        while (reader.Read())
-                        {
-                            var VARColumn = reader["ColumnName"].ToString();
-                            var VARDesc = reader["Description"]?.ToString();
-
-                            if (VARDesc != string.Empty)
-                            { 
-                                DICTDesc.Add(VARColumn, VARDesc);
-                            }
+                        if (typInfo.strColumnName == strTemp)
+                        { 
+                            ctlTemp.Text = typInfo.strDescription;
+                            ((Label)ctlTemp).AutoSize = true;
+                            ctlTemp.Refresh();
                         }
                     }
                 }
             }
 
-            //********end sub func*****
+            //set form title make sure only doing it once!
+            if (frmWhat.Controls["PANTitle"].Controls["LBLTitle"].Text == string.Empty) 
+            {
+                SetFormTitle(frmWhat);
+            }
+        }
 
-            GetSQLColumnDescriptions();
+
+        public static void SetFormDataEntryMax(Form frmWhat, string strTable)
+        {
+            /*
+             Created 12/03/2026 By Roger Williams
+
+             Sets maximum text limit for text/comboboxes based on values in: 
+                                  
+             VARS
+
+             frmWhat        - form to process
+             strTable       - table to get lengths for
+
+            */
+
+            string strTemp = string.Empty;
+            string strResult = string.Empty;
+            Component[] aryComponents = null;
 
             foreach (Control ctlTemp in frmWhat.Controls)
             {
-               if (ctlTemp is Label)
+                if (ctlTemp is Label)
                 {
-                   strTemp=ctlTemp.Name.Substring(3,ctlTemp.Name.Length - 3);
-                    //find in dictionary then set label text to dictionary value (column description)
-                    DICTDesc.TryGetValue(strTemp, out strResult);
-
-                    if (strResult != string.Empty)
+                    strTemp = ctlTemp.Name.Substring(3, ctlTemp.Name.Length - 3);
+                    //find in schema
+                    foreach (Modules.clsData.TTYPETableInfo typInfo in Modules.clsData.lstTableInfo)
                     {
-                        ctlTemp.Text = strResult;
-                        ctlTemp.Refresh();
+                        if (typInfo.strColumnName == strTemp)
+                        {
+                            //see if combobox exists for that field name
+                            aryComponents = frmWhat.Controls.Find("CMB" + strTemp, false);
+
+                            if (aryComponents.Length != 0)
+                            {
+                                ((ComboBox)aryComponents[0]).MaxLength = typInfo.intLength;
+                            }
+                            //see if textbox exists for that field name
+                            aryComponents = frmWhat.Controls.Find("TXT" + strTemp, false);
+
+                            if (aryComponents.Length != 0)
+                            {
+                                ((TextBox)aryComponents[0]).MaxLength = typInfo.intLength;
+                            }
+
+                            ctlTemp.Text = typInfo.strDescription;
+                            ((Label)ctlTemp).AutoSize = true;
+                            ctlTemp.Refresh();
+                        }
                     }
                 }
             }
 
-           // frmWhat.Update();
+            //set form title make sure only doing it once!
+            if (frmWhat.Controls["PANTitle"].Controls["LBLTitle"].Text == string.Empty)
+            {
+                SetFormTitle(frmWhat);
+            }
+        }
+
+        public static void PopulateComboBoxes(ComboBox CMBTemp, string strTable, string strKeyField, string strKeyFieldValue, string strSecondFieldName, string strSecondFieldValue, string strWHERE, bool blnDistinct)
+        {
+            /*
+              Created 17/02/2025 By Roger Williams
+
+              Populates the comboboxes with table values using first non
+              identity seed as column, unless user specifies a key field
+              and optional sort value
+
+              VARS
+
+              CMBTemp             - combobox to populate
+              strTable            - table to read from
+
+              Optional:
+
+              strKeyField         - key field name 
+              strKeyFieldValue    - key field value always handled as text 
+                                    in a commercial system would also pass data type
+              strSecondFieldName  - another field name 
+              strSecondFieldValue - another field value always handled as text 
+                                    in a commercial system would also pass data type
+              strWHERE             - specify WHERE clause
+              blnDistinct          - use DISTINCT 
+
+             Note: if NOT using blnDistinct strKeyField MUST have a value!
+
+
+            */
+
+            SqlConnection SQLConn;
+            SqlCommand SQLCmd;
+            SqlDataReader SQLRead;
+
+            //clear combo
+            CMBTemp.Items.Clear();
+
+            try
+            {
+                using (SQLConn = new SqlConnection(Modules.clsData.CNST_STR_ODBC))
+                {
+                    SQLConn.Open();
+                    SQLCmd = SQLConn.CreateCommand();
+
+                    if (blnDistinct)
+                    {
+                        SQLCmd.CommandText = "SELECT DISTINCT " + strKeyField + " FROM " + strTable;
+                    }
+                    else
+                    {
+                        SQLCmd.CommandText = "SELECT * FROM " + strTable;
+                    }
+                    if (strKeyField.Length != 0 && blnDistinct == false)
+                    {
+                        SQLCmd.CommandText += " WHERE " + strKeyField + " = '" + strKeyFieldValue + "'";
+                    }
+
+                    if (strSecondFieldName.Length != 0)
+                    {
+                        SQLCmd.CommandText += " AND " + strSecondFieldName + " = '" + strSecondFieldValue + "'";
+                    }
+
+                    if (strWHERE.Length != 0)
+                    {
+                        if (strKeyField.Length != 0)
+                        {
+                            strWHERE = strWHERE.ToUpper();
+                            strWHERE = strWHERE.Replace("WHERE", " AND ");
+                            SQLCmd.CommandText += " " + strWHERE;
+                        }
+                        else
+                        {
+                            SQLCmd.CommandText += " " + strWHERE;
+                        }
+                    }
+                    //add ;
+                    SQLCmd.CommandText += ";";
+
+                    SQLCmd.CommandType = CommandType.Text;
+                    SQLRead = SQLCmd.ExecuteReader();
+
+                    //Note: 0 = ID field
+                    while (SQLRead.Read())
+                    {
+                            if (strTable == Modules.clsTables.CNST_STR_LOCTRN)
+                            {
+                                CMBTemp.Items.Add(SQLRead[1].ToString());
+                            }
+                            if (strTable == Modules.clsTables.CNST_STR_LOTTRN)
+                            {
+                                CMBTemp.Items.Add(SQLRead[1].ToString());
+                            }
+                            if (strTable == Modules.clsTables.CNST_STR_STOCK_ITEMS)
+                            {
+                                CMBTemp.Items.Add(SQLRead[1].ToString());
+                            }
+                            if (strTable == Modules.clsTables.CNST_STR_STOCK_LOT)
+                            {
+                                CMBTemp.Items.Add(SQLRead[0].ToString());
+                            }
+                            if (strTable == Modules.clsTables.CNST_STR_STOCK_VENDORS)
+                            {
+                            CMBTemp.Items.Add(SQLRead[2].ToString());
+
+                            if (strTable == Modules.clsTables.CNST_STR_LOGIN)
+                            {
+                                CMBTemp.Items.Add(SQLRead[1].ToString());
+                            }
+                            if (strTable == Modules.clsTables.CNST_STR_MENU_GROUPS)
+                            {
+                                CMBTemp.Items.Add(SQLRead[0].ToString());
+                            }
+                            if (strTable == Modules.clsTables.CNST_STR_MENU_MENUITEMS)
+                            {
+                                CMBTemp.Items.Add(SQLRead[1].ToString());
+                            }
+                            if (strTable == Modules.clsTables.CNST_STR_MENU_AREAS)
+                            {
+                                CMBTemp.Items.Add(SQLRead[1].ToString());
+                            }
+                            if (strTable == Modules.clsTables.CNST_STR_MENU_USERGROUPS)
+                            {
+                                CMBTemp.Items.Add(SQLRead[0].ToString());
+                            }
+                        }
+
+                        //admin comboboxes
+                        if (strTable == Modules.clsTables.CNST_STR_LOGIN)
+                        {
+                            CMBTemp.Items.Add(SQLRead[1].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_MENU_GROUPS)
+                        {
+                            CMBTemp.Items.Add(SQLRead[0].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_MENU_MENUITEMS)
+                        {
+                            CMBTemp.Items.Add(SQLRead[1].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_MENU_AREAS)
+                        {
+                            CMBTemp.Items.Add(SQLRead[1].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_MENU_USERGROUPS)
+                        {
+                            CMBTemp.Items.Add(SQLRead[0].ToString());
+                        }
+                    }
+
+                    SQLRead.Close();
+                    SQLConn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                //Whoops!
+                MessageBox.Show("Error Opening Table " + strTable + " - Check SQL Server\n\n" + ex.Message, "Database Open Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+
+        static public void ArrangeChildForms(Form frmWhat, int intHow)
+        {
+            /*
+              Created 12/03/2026 By Roger Williams
+
+              arranges the MDI child forms, can be:
+              cascade
+              horizontal
+              vertical
+
+              VARS
+
+              frmWhat - MDI parent to use
+              intHo   - 1 = cascade, 2=horizontal, 3=vertical
+
+            */
+
+            int intFirstFormX = 130;
+            int intFirstFormY = 80;
+
+            switch (intHow)
+            {
+                case 1:  //cascade
+                    {
+                        foreach (Form frmTemp in frmWhat.MdiChildren)
+                        {
+                            frmTemp.Left = intFirstFormX;
+                            frmTemp.Top = intFirstFormY;
+                            intFirstFormX += 40;
+                            intFirstFormY += 40;
+                        }
+                        break;
+                    }
+                case 2:  //horizontal
+                    {
+                        foreach (Form frmTemp in frmWhat.MdiChildren)
+                        {
+                            frmTemp.Left = intFirstFormX;
+                            frmTemp.Top = intFirstFormY;
+                            intFirstFormX += 40;
+                        }
+                        break;
+                    }
+                case 3:  //vertical
+                    {
+                        foreach (Form frmTemp in frmWhat.MdiChildren)
+                        {
+                            frmTemp.Left = intFirstFormX;
+                            frmTemp.Top = intFirstFormY;
+                            intFirstFormY += 40;
+                        }
+                        break;
+                    }
+            }
         }
 
 
 
 
-        //class end
+
+
+
+
+
+
+        //****class end
     }
 }

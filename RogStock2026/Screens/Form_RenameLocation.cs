@@ -36,6 +36,10 @@ namespace RogStock2025.Screens
         bool blnShow = true;
         Pen penTemp;
 
+        //for manual mouse move of form
+        private bool blnDragging = false;
+        private Point pntLastLocation;
+
         public frmRenameLocation()
         {
             InitializeComponent();
@@ -200,7 +204,10 @@ namespace RogStock2025.Screens
             */
 
             //draw line
-            e.Graphics.DrawLine(penTemp, 0, 80, this.Width, 80);
+            e.Graphics.DrawLine(penTemp, 0, 124, this.Width, 124);
+            //fill titlebar with PANTitle back colour
+            Modules.clsView.FillTitleBar(e.Graphics, this.PANTitle.BackColor, this.PANTitle.Width, this.Width - this.PANTitle.Width, this.PANTitle.Height);
+
         }
 
         private void BTNClose_Click(object sender, EventArgs e)
@@ -292,6 +299,34 @@ namespace RogStock2025.Screens
                 this.TXTLocTo.Focus();
                 MessageBox.Show("Location Already Exists", "Duplicate Location Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void frmRenameLocation_MouseDown(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void PANTitle_MouseDown(object sender, MouseEventArgs e)
+        {
+            blnDragging = true;
+            pntLastLocation = e.Location;
+        }
+
+        private void PANTitle_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (blnDragging)
+            {
+                this.Location = new Point(
+                (this.Location.X - pntLastLocation.X) + e.X,
+                (this.Location.Y - pntLastLocation.Y) + e.Y);
+
+                this.Update();
+            }
+        }
+
+        private void PANTitle_MouseUp(object sender, MouseEventArgs e)
+        {
+            blnDragging = false;
         }
     }
 }

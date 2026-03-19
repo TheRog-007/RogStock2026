@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace RogStock2025.Screens
+﻿namespace RogJobCRMPlus
 {
     partial class frmMain
     {
@@ -37,17 +30,9 @@ namespace RogStock2025.Screens
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
-            this.TMRMenu = new System.Windows.Forms.Timer(this.components);
-            this.PANOptions = new System.Windows.Forms.Panel();
-            this.MNUOpenWindows = new System.Windows.Forms.MenuStrip();
-            this.MNUWindows = new System.Windows.Forms.ToolStripMenuItem();
-            this.PANSections = new System.Windows.Forms.Panel();
-            this.PANExit = new System.Windows.Forms.Panel();
-            this.BTNExit = new System.Windows.Forms.Button();
-            this.BTNShowHide = new System.Windows.Forms.Button();
-            this.PANTitle = new System.Windows.Forms.Panel();
-            this.PICClose = new System.Windows.Forms.PictureBox();
-            this.LBLTitle = new System.Windows.Forms.Label();
+            this.PANLine = new System.Windows.Forms.Panel();
+            this.PANCycle = new System.Windows.Forms.Panel();
+            this.LBLCycle = new System.Windows.Forms.Label();
             this.PANMenu = new System.Windows.Forms.Panel();
             this.MNUMainMenu = new System.Windows.Forms.MenuStrip();
             this.MNUForms = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,146 +42,66 @@ namespace RogStock2025.Screens
             this.MNUCascade = new System.Windows.Forms.ToolStripMenuItem();
             this.MNUHorizontal = new System.Windows.Forms.ToolStripMenuItem();
             this.MNUVertical = new System.Windows.Forms.ToolStripMenuItem();
-            this.PANLine = new System.Windows.Forms.Panel();
-            this.PANOptions.SuspendLayout();
-            this.MNUOpenWindows.SuspendLayout();
-            this.PANSections.SuspendLayout();
-            this.PANExit.SuspendLayout();
-            this.PANTitle.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PICClose)).BeginInit();
+            this.PANTitle = new System.Windows.Forms.Panel();
+            this.PICClose = new System.Windows.Forms.PictureBox();
+            this.LBLTitle = new System.Windows.Forms.Label();
+            this.BTNShowHide = new System.Windows.Forms.Button();
+            this.PANSections = new System.Windows.Forms.Panel();
+            this.PANExit = new System.Windows.Forms.Panel();
+            this.BTNExit = new System.Windows.Forms.Button();
+            this.PANOptions = new System.Windows.Forms.Panel();
+            this.MNUOpenWindows = new System.Windows.Forms.MenuStrip();
+            this.MNUWindows = new System.Windows.Forms.ToolStripMenuItem();
+            this.TMRShowHide = new System.Windows.Forms.Timer(this.components);
+            this.PANCycle.SuspendLayout();
             this.PANMenu.SuspendLayout();
             this.MNUMainMenu.SuspendLayout();
+            this.PANTitle.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PICClose)).BeginInit();
+            this.PANSections.SuspendLayout();
+            this.PANExit.SuspendLayout();
+            this.PANOptions.SuspendLayout();
+            this.MNUOpenWindows.SuspendLayout();
             this.SuspendLayout();
             // 
-            // TMRMenu
+            // PANLine
             // 
-            this.TMRMenu.Interval = 4000;
-            this.TMRMenu.Tick += new System.EventHandler(this.TMRMenu_Tick);
+            this.PANLine.BackColor = System.Drawing.Color.White;
+            this.PANLine.Location = new System.Drawing.Point(34, 62);
+            this.PANLine.Name = "PANLine";
+            this.PANLine.Size = new System.Drawing.Size(1655, 2);
+            this.PANLine.TabIndex = 65;
             // 
-            // PANOptions
+            // PANCycle
             // 
-            this.PANOptions.BackColor = System.Drawing.Color.Teal;
-            this.PANOptions.Controls.Add(this.MNUOpenWindows);
-            this.PANOptions.ForeColor = System.Drawing.Color.White;
-            this.PANOptions.Location = new System.Drawing.Point(31, 36);
-            this.PANOptions.Margin = new System.Windows.Forms.Padding(4);
-            this.PANOptions.Name = "PANOptions";
-            this.PANOptions.Size = new System.Drawing.Size(268, 27);
-            this.PANOptions.TabIndex = 8;
+            this.PANCycle.BackColor = System.Drawing.Color.SteelBlue;
+            this.PANCycle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.PANCycle.Controls.Add(this.LBLCycle);
+            this.PANCycle.Location = new System.Drawing.Point(680, 35);
+            this.PANCycle.Name = "PANCycle";
+            this.PANCycle.Size = new System.Drawing.Size(600, 27);
+            this.PANCycle.TabIndex = 66;
             // 
-            // MNUOpenWindows
+            // LBLCycle
             // 
-            this.MNUOpenWindows.BackColor = System.Drawing.Color.SteelBlue;
-            this.MNUOpenWindows.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MNUWindows});
-            this.MNUOpenWindows.Location = new System.Drawing.Point(0, 0);
-            this.MNUOpenWindows.Name = "MNUOpenWindows";
-            this.MNUOpenWindows.Size = new System.Drawing.Size(268, 27);
-            this.MNUOpenWindows.TabIndex = 1;
-            this.MNUOpenWindows.Text = "menuStrip1";
-            // 
-            // MNUWindows
-            // 
-            this.MNUWindows.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.MNUWindows.ForeColor = System.Drawing.Color.White;
-            this.MNUWindows.Name = "MNUWindows";
-            this.MNUWindows.Size = new System.Drawing.Size(122, 23);
-            this.MNUWindows.Text = "Open Windows";
-            // 
-            // PANSections
-            // 
-            this.PANSections.BackColor = System.Drawing.Color.Teal;
-            this.PANSections.Controls.Add(this.PANExit);
-            this.PANSections.ForeColor = System.Drawing.Color.White;
-            this.PANSections.Location = new System.Drawing.Point(0, 95);
-            this.PANSections.Margin = new System.Windows.Forms.Padding(4);
-            this.PANSections.Name = "PANSections";
-            this.PANSections.Size = new System.Drawing.Size(138, 481);
-            this.PANSections.TabIndex = 10;
-            // 
-            // PANExit
-            // 
-            this.PANExit.Controls.Add(this.BTNExit);
-            this.PANExit.Location = new System.Drawing.Point(1, 432);
-            this.PANExit.Name = "PANExit";
-            this.PANExit.Size = new System.Drawing.Size(136, 44);
-            this.PANExit.TabIndex = 11;
-            // 
-            // BTNExit
-            // 
-            this.BTNExit.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.BTNExit.FlatAppearance.MouseDownBackColor = System.Drawing.Color.ForestGreen;
-            this.BTNExit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.OliveDrab;
-            this.BTNExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BTNExit.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BTNExit.Location = new System.Drawing.Point(5, 11);
-            this.BTNExit.Name = "BTNExit";
-            this.BTNExit.Size = new System.Drawing.Size(124, 27);
-            this.BTNExit.TabIndex = 1;
-            this.BTNExit.Text = "Exit";
-            this.BTNExit.UseVisualStyleBackColor = true;
-            this.BTNExit.Click += new System.EventHandler(this.BTNExit_Click);
-            // 
-            // BTNShowHide
-            // 
-            this.BTNShowHide.BackColor = System.Drawing.Color.CadetBlue;
-            this.BTNShowHide.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightGreen;
-            this.BTNShowHide.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DeepSkyBlue;
-            this.BTNShowHide.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BTNShowHide.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BTNShowHide.ForeColor = System.Drawing.Color.SteelBlue;
-            this.BTNShowHide.Location = new System.Drawing.Point(0, 36);
-            this.BTNShowHide.Margin = new System.Windows.Forms.Padding(4);
-            this.BTNShowHide.Name = "BTNShowHide";
-            this.BTNShowHide.Size = new System.Drawing.Size(33, 58);
-            this.BTNShowHide.TabIndex = 11;
-            this.BTNShowHide.UseVisualStyleBackColor = false;
-            this.BTNShowHide.Click += new System.EventHandler(this.BTNShowHide_Click);
-            this.BTNShowHide.Paint += new System.Windows.Forms.PaintEventHandler(this.BTNShowHide_Paint);
-            // 
-            // PANTitle
-            // 
-            this.PANTitle.AutoSize = true;
-            this.PANTitle.BackColor = System.Drawing.Color.CadetBlue;
-            this.PANTitle.Controls.Add(this.PICClose);
-            this.PANTitle.Controls.Add(this.LBLTitle);
-            this.PANTitle.Location = new System.Drawing.Point(1, 2);
-            this.PANTitle.Name = "PANTitle";
-            this.PANTitle.Size = new System.Drawing.Size(1697, 32);
-            this.PANTitle.TabIndex = 47;
-            // 
-            // PICClose
-            // 
-            this.PICClose.Image = ((System.Drawing.Image)(resources.GetObject("PICClose.Image")));
-            this.PICClose.Location = new System.Drawing.Point(1670, 4);
-            this.PICClose.Name = "PICClose";
-            this.PICClose.Size = new System.Drawing.Size(24, 24);
-            this.PICClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PICClose.TabIndex = 1;
-            this.PICClose.TabStop = false;
-            this.PICClose.Click += new System.EventHandler(this.PICClose_Click);
-            // 
-            // LBLTitle
-            // 
-            this.LBLTitle.AutoSize = true;
-            this.LBLTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LBLTitle.ForeColor = System.Drawing.Color.White;
-            this.LBLTitle.Location = new System.Drawing.Point(9, 8);
-            this.LBLTitle.Name = "LBLTitle";
-            this.LBLTitle.Size = new System.Drawing.Size(52, 17);
-            this.LBLTitle.TabIndex = 0;
-            this.LBLTitle.Text = "label1";
+            this.LBLCycle.AutoSize = true;
+            this.LBLCycle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LBLCycle.ForeColor = System.Drawing.Color.White;
+            this.LBLCycle.Location = new System.Drawing.Point(6, 3);
+            this.LBLCycle.Name = "LBLCycle";
+            this.LBLCycle.Size = new System.Drawing.Size(0, 17);
+            this.LBLCycle.TabIndex = 0;
             // 
             // PANMenu
             // 
             this.PANMenu.BackColor = System.Drawing.Color.SteelBlue;
             this.PANMenu.Controls.Add(this.MNUMainMenu);
             this.PANMenu.ForeColor = System.Drawing.Color.White;
-            this.PANMenu.Location = new System.Drawing.Point(299, 36);
+            this.PANMenu.Location = new System.Drawing.Point(299, 35);
             this.PANMenu.Margin = new System.Windows.Forms.Padding(4);
             this.PANMenu.Name = "PANMenu";
             this.PANMenu.Size = new System.Drawing.Size(388, 27);
-            this.PANMenu.TabIndex = 49;
+            this.PANMenu.TabIndex = 64;
             // 
             // MNUMainMenu
             // 
@@ -255,94 +160,212 @@ namespace RogStock2025.Screens
             // 
             this.MNUCascade.ForeColor = System.Drawing.Color.White;
             this.MNUCascade.Name = "MNUCascade";
-            this.MNUCascade.Size = new System.Drawing.Size(180, 24);
+            this.MNUCascade.Size = new System.Drawing.Size(149, 24);
             this.MNUCascade.Text = "Cascade";
+            this.MNUCascade.Click += new System.EventHandler(this.MNUCascade_Click);
             // 
             // MNUHorizontal
             // 
             this.MNUHorizontal.ForeColor = System.Drawing.Color.White;
             this.MNUHorizontal.Name = "MNUHorizontal";
-            this.MNUHorizontal.Size = new System.Drawing.Size(180, 24);
+            this.MNUHorizontal.Size = new System.Drawing.Size(149, 24);
             this.MNUHorizontal.Text = "Horizontal";
+            this.MNUHorizontal.Click += new System.EventHandler(this.MNUHorizontal_Click);
             // 
             // MNUVertical
             // 
             this.MNUVertical.ForeColor = System.Drawing.Color.White;
             this.MNUVertical.Name = "MNUVertical";
-            this.MNUVertical.Size = new System.Drawing.Size(180, 24);
+            this.MNUVertical.Size = new System.Drawing.Size(149, 24);
             this.MNUVertical.Text = "Vertical";
+            this.MNUVertical.Click += new System.EventHandler(this.MNUVertical_Click);
             // 
-            // PANLine
+            // PANTitle
             // 
-            this.PANLine.BackColor = System.Drawing.Color.White;
-            this.PANLine.Location = new System.Drawing.Point(34, 63);
-            this.PANLine.Name = "PANLine";
-            this.PANLine.Size = new System.Drawing.Size(1655, 2);
-            this.PANLine.TabIndex = 50;
+            this.PANTitle.AutoSize = true;
+            this.PANTitle.BackColor = System.Drawing.Color.CadetBlue;
+            this.PANTitle.Controls.Add(this.PICClose);
+            this.PANTitle.Controls.Add(this.LBLTitle);
+            this.PANTitle.Location = new System.Drawing.Point(1, 1);
+            this.PANTitle.Name = "PANTitle";
+            this.PANTitle.Size = new System.Drawing.Size(1697, 32);
+            this.PANTitle.TabIndex = 63;
+            this.PANTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PANTitle_MouseDown);
+            this.PANTitle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PANTitle_MouseMove);
+            this.PANTitle.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PANTitle_MouseUp);
+            // 
+            // PICClose
+            // 
+            this.PICClose.Image = ((System.Drawing.Image)(resources.GetObject("PICClose.Image")));
+            this.PICClose.Location = new System.Drawing.Point(1672, 4);
+            this.PICClose.Name = "PICClose";
+            this.PICClose.Size = new System.Drawing.Size(22, 22);
+            this.PICClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PICClose.TabIndex = 1;
+            this.PICClose.TabStop = false;
+            this.PICClose.Click += new System.EventHandler(this.PICClose_Click);
+            // 
+            // LBLTitle
+            // 
+            this.LBLTitle.AutoSize = true;
+            this.LBLTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LBLTitle.ForeColor = System.Drawing.Color.White;
+            this.LBLTitle.Location = new System.Drawing.Point(9, 8);
+            this.LBLTitle.Name = "LBLTitle";
+            this.LBLTitle.Size = new System.Drawing.Size(154, 17);
+            this.LBLTitle.TabIndex = 0;
+            this.LBLTitle.Text = "Rogs Job CRM Plus!";
+            // 
+            // BTNShowHide
+            // 
+            this.BTNShowHide.BackColor = System.Drawing.Color.CadetBlue;
+            this.BTNShowHide.FlatAppearance.MouseDownBackColor = System.Drawing.Color.LightGreen;
+            this.BTNShowHide.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DeepSkyBlue;
+            this.BTNShowHide.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BTNShowHide.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BTNShowHide.ForeColor = System.Drawing.Color.SteelBlue;
+            this.BTNShowHide.Location = new System.Drawing.Point(0, 35);
+            this.BTNShowHide.Margin = new System.Windows.Forms.Padding(4);
+            this.BTNShowHide.Name = "BTNShowHide";
+            this.BTNShowHide.Size = new System.Drawing.Size(33, 58);
+            this.BTNShowHide.TabIndex = 62;
+            this.BTNShowHide.UseVisualStyleBackColor = false;
+            this.BTNShowHide.Click += new System.EventHandler(this.BTNShowHide_Click);
+            this.BTNShowHide.Paint += new System.Windows.Forms.PaintEventHandler(this.BTNShowHide_Paint);
+            // 
+            // PANSections
+            // 
+            this.PANSections.BackColor = System.Drawing.Color.Teal;
+            this.PANSections.Controls.Add(this.PANExit);
+            this.PANSections.ForeColor = System.Drawing.Color.White;
+            this.PANSections.Location = new System.Drawing.Point(0, 94);
+            this.PANSections.Margin = new System.Windows.Forms.Padding(4);
+            this.PANSections.Name = "PANSections";
+            this.PANSections.Size = new System.Drawing.Size(138, 481);
+            this.PANSections.TabIndex = 61;
+            // 
+            // PANExit
+            // 
+            this.PANExit.Controls.Add(this.BTNExit);
+            this.PANExit.Location = new System.Drawing.Point(1, 432);
+            this.PANExit.Name = "PANExit";
+            this.PANExit.Size = new System.Drawing.Size(136, 44);
+            this.PANExit.TabIndex = 11;
+            // 
+            // BTNExit
+            // 
+            this.BTNExit.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.BTNExit.FlatAppearance.MouseDownBackColor = System.Drawing.Color.ForestGreen;
+            this.BTNExit.FlatAppearance.MouseOverBackColor = System.Drawing.Color.OliveDrab;
+            this.BTNExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BTNExit.Font = new System.Drawing.Font("Segoe UI Black", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BTNExit.Location = new System.Drawing.Point(5, 11);
+            this.BTNExit.Name = "BTNExit";
+            this.BTNExit.Size = new System.Drawing.Size(124, 27);
+            this.BTNExit.TabIndex = 1;
+            this.BTNExit.Text = "Exit";
+            this.BTNExit.UseVisualStyleBackColor = true;
+            this.BTNExit.Click += new System.EventHandler(this.BTNExit_Click);
+            // 
+            // PANOptions
+            // 
+            this.PANOptions.BackColor = System.Drawing.Color.Teal;
+            this.PANOptions.Controls.Add(this.MNUOpenWindows);
+            this.PANOptions.ForeColor = System.Drawing.Color.White;
+            this.PANOptions.Location = new System.Drawing.Point(31, 35);
+            this.PANOptions.Margin = new System.Windows.Forms.Padding(4);
+            this.PANOptions.Name = "PANOptions";
+            this.PANOptions.Size = new System.Drawing.Size(268, 27);
+            this.PANOptions.TabIndex = 60;
+            // 
+            // MNUOpenWindows
+            // 
+            this.MNUOpenWindows.BackColor = System.Drawing.Color.SteelBlue;
+            this.MNUOpenWindows.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MNUWindows});
+            this.MNUOpenWindows.Location = new System.Drawing.Point(0, 0);
+            this.MNUOpenWindows.Name = "MNUOpenWindows";
+            this.MNUOpenWindows.Size = new System.Drawing.Size(268, 27);
+            this.MNUOpenWindows.TabIndex = 1;
+            this.MNUOpenWindows.Text = "menuStrip1";
+            // 
+            // MNUWindows
+            // 
+            this.MNUWindows.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.MNUWindows.ForeColor = System.Drawing.Color.White;
+            this.MNUWindows.Name = "MNUWindows";
+            this.MNUWindows.Size = new System.Drawing.Size(122, 23);
+            this.MNUWindows.Text = "Open Windows";
+            // 
+            // TMRShowHide
+            // 
+            this.TMRShowHide.Interval = 1200;
+            this.TMRShowHide.Tick += new System.EventHandler(this.TMRShowHide_Tick);
             // 
             // frmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.BackColor = System.Drawing.Color.DarkKhaki;
-            this.ClientSize = new System.Drawing.Size(1698, 923);
+            this.ClientSize = new System.Drawing.Size(1700, 854);
             this.Controls.Add(this.PANLine);
+            this.Controls.Add(this.PANCycle);
             this.Controls.Add(this.PANMenu);
             this.Controls.Add(this.PANTitle);
             this.Controls.Add(this.BTNShowHide);
             this.Controls.Add(this.PANSections);
             this.Controls.Add(this.PANOptions);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.IsMdiContainer = true;
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MaximizeBox = false;
             this.Name = "frmMain";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "RogStock 2026";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Rog Job CRM Plus";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.frmMain_Load);
-            this.PANOptions.ResumeLayout(false);
-            this.PANOptions.PerformLayout();
-            this.MNUOpenWindows.ResumeLayout(false);
-            this.MNUOpenWindows.PerformLayout();
-            this.PANSections.ResumeLayout(false);
-            this.PANExit.ResumeLayout(false);
-            this.PANTitle.ResumeLayout(false);
-            this.PANTitle.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PICClose)).EndInit();
+            this.PANCycle.ResumeLayout(false);
+            this.PANCycle.PerformLayout();
             this.PANMenu.ResumeLayout(false);
             this.PANMenu.PerformLayout();
             this.MNUMainMenu.ResumeLayout(false);
             this.MNUMainMenu.PerformLayout();
+            this.PANTitle.ResumeLayout(false);
+            this.PANTitle.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PICClose)).EndInit();
+            this.PANSections.ResumeLayout(false);
+            this.PANExit.ResumeLayout(false);
+            this.PANOptions.ResumeLayout(false);
+            this.PANOptions.PerformLayout();
+            this.MNUOpenWindows.ResumeLayout(false);
+            this.MNUOpenWindows.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Timer TMRMenu;
-        private System.Windows.Forms.Panel PANOptions;
-        private System.Windows.Forms.Panel PANSections;
+
+        private System.Windows.Forms.Panel PANLine;
+        private System.Windows.Forms.Panel PANCycle;
+        private System.Windows.Forms.Label LBLCycle;
+        private System.Windows.Forms.Panel PANMenu;
+        private System.Windows.Forms.MenuStrip MNUMainMenu;
+        private System.Windows.Forms.ToolStripMenuItem MNUForms;
+        private System.Windows.Forms.ToolStripMenuItem MNUReports;
+        private System.Windows.Forms.ToolStripMenuItem MNUOperations;
+        private System.Windows.Forms.ToolStripMenuItem MNUArrangeWindows;
+        private System.Windows.Forms.ToolStripMenuItem MNUCascade;
+        private System.Windows.Forms.ToolStripMenuItem MNUHorizontal;
+        private System.Windows.Forms.ToolStripMenuItem MNUVertical;
+        private System.Windows.Forms.Panel PANTitle;
+        private System.Windows.Forms.PictureBox PICClose;
+        private System.Windows.Forms.Label LBLTitle;
         private System.Windows.Forms.Button BTNShowHide;
-        private System.Windows.Forms.ComboBox CMBOpenScreens;
-        private System.Windows.Forms.Label label1;
-        private Panel PANExit;
-        private Button BTNExit;
-        private MenuStrip MNUOpenWindows;
-        private ToolStripMenuItem MNUWindows;
-        private Panel PANTitle;
-        private PictureBox PICClose;
-        private Label LBLTitle;
-        private Panel PANMenu;
-        private MenuStrip MNUMainMenu;
-        private ToolStripMenuItem MNUForms;
-        private ToolStripMenuItem MNUReports;
-        private ToolStripMenuItem MNUOperations;
-        private ToolStripMenuItem MNUArrangeWindows;
-        private ToolStripMenuItem MNUCascade;
-        private ToolStripMenuItem MNUHorizontal;
-        private ToolStripMenuItem MNUVertical;
-        private Panel PANLine;
+        private System.Windows.Forms.Panel PANSections;
+        private System.Windows.Forms.Panel PANExit;
+        private System.Windows.Forms.Button BTNExit;
+        private System.Windows.Forms.Panel PANOptions;
+        private System.Windows.Forms.MenuStrip MNUOpenWindows;
+        private System.Windows.Forms.ToolStripMenuItem MNUWindows;
+        private System.Windows.Forms.Timer TMRShowHide;
     }
 }
+

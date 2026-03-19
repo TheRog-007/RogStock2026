@@ -51,7 +51,7 @@ namespace RogStock2025.Screens
         bool blnOk = false;
         bool blnLoading = false;
         bool blnShow = true;
-        Pen penTemp;
+       
         //binding sources to link tables to controls
         BindingSource BNSStock_Item = new BindingSource();
         BindingSource BNSStock_Description = new BindingSource();
@@ -62,6 +62,11 @@ namespace RogStock2025.Screens
 
         //find form
         frmFind frmTemp = new frmFind(Modules.clsTables.CNST_STR_FINDSTOCKITEM);
+
+        //for drawing
+        Pen penTemp;
+        Brush bruTemp;
+        Rectangle rectTemp;
 
 
         public frmStockItems()
@@ -837,6 +842,8 @@ namespace RogStock2025.Screens
             */
             //draw line
             e.Graphics.DrawLine(penTemp, 0, 80, this.Width, 80);
+            //fill titlebar with PANTitle back colour
+            Modules.clsView.FillTitleBar(e.Graphics, this.PANTitle.BackColor, this.PANTitle.Width, this.Width - this.PANTitle.Width, this.PANTitle.Height);
         }
 
         private void BTNSave_Click(object sender, EventArgs e)

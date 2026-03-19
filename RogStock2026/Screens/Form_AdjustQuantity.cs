@@ -259,7 +259,7 @@ namespace RogStock2025.Screens
             //validate loc/lot quantites match IF some lots to check!
             if (this.DGVLots.Rows.Count != 0)
             {
-                //validate each Location WITH a Lot has Lot(s) EQUAl to the Location qty
+                //validate each Location WITH a Lot has Lot(s) EQUAL to the Location qty
                 lstErrors = ValidateAllLocationQtys();
                 //skip root list element
                 if (lstErrors.Count > 1)
@@ -299,6 +299,7 @@ namespace RogStock2025.Screens
                             SQLCmd.CommandType = CommandType.StoredProcedure;
                             SQLCmd.CommandText = "sp_CreateNewLot";
                             //@itemID varchar(50), @qty int, @LotNbr int output
+                            SQLCmd.Parameters.Clear(); 
                             SQLCmd.Parameters.Add("@itemID", SqlDbType.VarChar, 50).Value = this.CMBSTKI_ItemID.Text;
                             SQLCmd.Parameters.Add("@Location", SqlDbType.VarChar, 30).Value = this.DGVLocations.Rows[intSelectedLoc].Cells[0].Value;   // DTRTemp["Location"];
                             SQLCmd.Parameters.Add("@qty", SqlDbType.Int, 0).Value = Convert.ToInt32(this.DGVLocations.Rows[intSelectedLoc].Cells[1].Value);  //DTRTemp["Qty"];
@@ -595,21 +596,6 @@ namespace RogStock2025.Screens
             this.Close();
         }
 
-        private void frmAdjustQuantity_Paint(object sender, PaintEventArgs e)
-        {
-            /*
-              Created 25/02/2025 By Roger Williams
-
-              Draws line across screen
-
-            */
-
-
-
-            //draw lines
-            e.Graphics.DrawLine(penTemp, 0, 60, this.Width, 60);
-            e.Graphics.DrawLine(penTemp, 0, 268, this.Width, 268);
-        }
 
         private void BTNSave_Click(object sender, EventArgs e)
         {
@@ -753,6 +739,38 @@ namespace RogStock2025.Screens
         private void DGVLocations_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             intSelectedLoc = e.RowIndex;
+        }
+
+        private void frmAdjustQuantity_Paint(object sender, PaintEventArgs e)
+        {
+            /*
+              Created 25/02/2025 By Roger Williams
+
+              Draws line across screen
+
+            */
+
+
+
+            //draw lines
+            e.Graphics.DrawLine(penTemp, 0, 82, this.Width, 82);
+            e.Graphics.DrawLine(penTemp, 0, 340, this.Width, 340);
+            //fill titlebar with PANTitle back colour
+            Modules.clsView.FillTitleBar(e.Graphics, this.PANTitle.BackColor, this.PANTitle.Width, this.Width - this.PANTitle.Width, this.PANTitle.Height);
+        }
+
+        private void frmAdjustQuantity_MouseDown(object sender, MouseEventArgs e)
+        {
+            //if pointer inside "title bar"
+            if (e.Y <= Modules.clsView.CNST_INT_TITLEBARHEIGHT)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    //move form
+                    Modules.clsView.User32_DLL.ReleaseCapture();
+                    Modules.clsView.User32_DLL.SendMessage(this.Handle, Modules.clsView.WM_NCLBUTTONDOWN, (IntPtr)Modules.clsView.HTCAPTION, new IntPtr(0));
+                }
+            }
         }
     }
 }

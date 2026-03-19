@@ -237,6 +237,8 @@ namespace RogStock2025.Screens
 
             //draw line
             e.Graphics.DrawLine(penTemp, 0, 40, this.Width, 40);
+            //fill titlebar with PANTitle back colour
+            Modules.clsView.FillTitleBar(e.Graphics, this.PANTitle.BackColor, this.PANTitle.Width, this.Width - this.PANTitle.Width, this.PANTitle.Height);
         }
 
         private void BTNClose_Click(object sender, EventArgs e)
@@ -361,6 +363,20 @@ namespace RogStock2025.Screens
             }
 
             blnOk = false;
+        }
+
+        private void frmUOMMaintenance_MouseDown(object sender, MouseEventArgs e)
+        {
+            //if pointer inside "title bar"
+            if (e.Y <= Modules.clsView.CNST_INT_TITLEBARHEIGHT)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    //move form
+                    Modules.clsView.User32_DLL.ReleaseCapture();
+                    Modules.clsView.User32_DLL.SendMessage(this.Handle, Modules.clsView.WM_NCLBUTTONDOWN, (IntPtr)Modules.clsView.HTCAPTION, new IntPtr(0));
+                }
+            }
         }
     }
 }

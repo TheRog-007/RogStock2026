@@ -50,6 +50,10 @@ namespace RogStock2025.Screens
         //find form
         frmFind frmTemp = new frmFind(Modules.clsTables.CNST_STR_FINDSTOCKITEM);
 
+        //for manual mouse move of form
+        private bool blnDragging = false;
+        private Point pntLastLocation;
+
         public frmUseStock()
         {
             InitializeComponent();
@@ -285,7 +289,8 @@ namespace RogStock2025.Screens
                     this.CMBSTKI_ItemID.Text = this.TXTHidden.Text;
                 }
 
-                GetStockDescription();
+                //get stock item description
+                this.LBLItemDesc.Text = Modules.clsData.GetStockDescription(this.CMBSTKI_ItemID.Text);
                 LoadLotsIntoDataGrid();
 
                 //enable form
@@ -336,35 +341,8 @@ namespace RogStock2025.Screens
             blnLoading = false;
         }
 
-        private void GetStockDescription()
-        {
-            /*
-                 Created 27/02/2025 By Roger Williams
-
-                 Reads description record from Stock_Description
-
-            */
-            SqlDataReader SQLRead;
-            SqlCommand SQLCmdDesc;
-
-            SQLCmdDesc = new SqlCommand("SELECT STKD_Desc FROM " + Modules.clsTables.CNST_STR_STOCK_DESCRIPTION + " WHERE STKD_ItemID = '" + this.CMBSTKI_ItemID.Text + "';", SQLConn);
-            SQLRead = SQLCmdDesc.ExecuteReader();
-
-            //load from dataset
-            if (SQLRead.HasRows)
-            {
-                SQLRead.Read();
-                this.LBLSTKD_Desc.Text = SQLRead["STKD_Desc"].ToString();
-            }
-            else
-            {
-                this.LBLSTKD_Desc.Text = string.Empty; ;
-            }
-
-            SQLRead.Close();
-        }
-
-        //form events
+       
+        //********form events
 
         private void frmUseStock_Load(object sender, EventArgs e)
         {
@@ -396,19 +374,6 @@ namespace RogStock2025.Screens
             }
         }
 
-        private void frmUseStock_Paint(object sender, PaintEventArgs e)
-        {
-            /*
-              Created 25/02/2025 By Roger Williams
-
-              Draws lines across screen
-
-            */
-
-            //draw lines
-            e.Graphics.DrawLine(penTemp, 0, 70, this.Width, 70);
-            e.Graphics.DrawLine(penTemp, 0, 360, this.Width, 360);
-        }
 
         private void BTNClose_Click(object sender, EventArgs e)
         {
@@ -487,7 +452,8 @@ namespace RogStock2025.Screens
                     this.DGVLots.DataSource = "";
                     //populate locations for item list
                     Modules.clsData.PopulateComboBoxes(this.CMBLOC_Location, Modules.clsTables.CNST_STR_STOCK_LOC, "LOC_ItemID", this.CMBSTKI_ItemID.Text, "", "", "", false);
-                    GetStockDescription();
+                    //get stock item description
+                    this.LBLItemDesc.Text = Modules.clsData.GetStockDescription(this.CMBSTKI_ItemID.Text);
                     LoadRecord();
                 }
             }
@@ -544,7 +510,8 @@ namespace RogStock2025.Screens
                         this.DGVLots.DataSource = "";
                         //populate locations for item list
                         Modules.clsData.PopulateComboBoxes(this.CMBLOC_Location, Modules.clsTables.CNST_STR_STOCK_LOC, "LOC_ItemID", this.CMBSTKI_ItemID.Text, "", "", "", false);
-                        GetStockDescription();
+                        //get stock item description
+                        this.LBLItemDesc.Text = Modules.clsData.GetStockDescription(this.CMBSTKI_ItemID.Text);
                         LoadRecord();
                     }
                 }
@@ -625,6 +592,45 @@ namespace RogStock2025.Screens
             {
                 e.CellStyle.BackColor = Color.DarkBlue;
             }
+        }
+
+        private void frmUseStock_Paint(object sender, PaintEventArgs e)
+        {
+            /*
+              Created 25/02/2025 By Roger Williams
+
+              Draws lines across screen
+
+            */
+
+            //draw lines
+            e.Graphics.DrawLine(penTemp, 0, 114, this.Width, 114);
+            e.Graphics.DrawLine(penTemp, 0, 420, this.Width, 420);
+            //fill titlebar with PANTitle back colour
+            Modules.clsView.FillTitleBar(e.Graphics, this.PANTitle.BackColor, this.PANTitle.Width, this.Width - this.PANTitle.Width, this.PANTitle.Height);
+        }
+
+        private void PANTitle_MouseDown(object sender, MouseEventArgs e)
+        {
+            blnDragging = true;
+            pntLastLocation = e.Location;
+        }
+
+        private void PANTitle_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (blnDragging)
+            {
+                this.Location = new Point(
+                (this.Location.X - pntLastLocation.X) + e.X,
+                (this.Location.Y - pntLastLocation.Y) + e.Y);
+
+                this.Update();
+            }
+        }
+
+        private void PANTitle_MouseUp(object sender, MouseEventArgs e)
+        {
+            blnDragging = false;
         }
     }
 }

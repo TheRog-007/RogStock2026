@@ -35,18 +35,22 @@ namespace RogStock2025.Screens
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmProductFamilyMassReplace));
             this.CMBProdFamTo = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.CMBProdFamFrom = new System.Windows.Forms.ComboBox();
             this.LBLSTKP_ProductFamilyFrom = new System.Windows.Forms.Label();
-            this.BTNClose = new System.Windows.Forms.Button();
             this.BTNSave = new System.Windows.Forms.Button();
+            this.BTNClose = new System.Windows.Forms.Button();
+            this.PANTitle = new System.Windows.Forms.Panel();
+            this.LBLTitle = new System.Windows.Forms.Label();
+            this.PANTitle.SuspendLayout();
             this.SuspendLayout();
             // 
             // CMBProdFamTo
             // 
             this.CMBProdFamTo.FormattingEnabled = true;
-            this.CMBProdFamTo.Location = new System.Drawing.Point(182, 49);
+            this.CMBProdFamTo.Location = new System.Drawing.Point(162, 68);
             this.CMBProdFamTo.MaxLength = 20;
             this.CMBProdFamTo.Name = "CMBProdFamTo";
             this.CMBProdFamTo.Size = new System.Drawing.Size(200, 21);
@@ -59,7 +63,7 @@ namespace RogStock2025.Screens
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.Red;
-            this.label1.Location = new System.Drawing.Point(34, 54);
+            this.label1.Location = new System.Drawing.Point(14, 73);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(95, 13);
             this.label1.TabIndex = 59;
@@ -68,7 +72,7 @@ namespace RogStock2025.Screens
             // CMBProdFamFrom
             // 
             this.CMBProdFamFrom.FormattingEnabled = true;
-            this.CMBProdFamFrom.Location = new System.Drawing.Point(182, 21);
+            this.CMBProdFamFrom.Location = new System.Drawing.Point(162, 40);
             this.CMBProdFamFrom.MaxLength = 20;
             this.CMBProdFamFrom.Name = "CMBProdFamFrom";
             this.CMBProdFamFrom.Size = new System.Drawing.Size(200, 21);
@@ -81,26 +85,15 @@ namespace RogStock2025.Screens
             // 
             this.LBLSTKP_ProductFamilyFrom.AutoSize = true;
             this.LBLSTKP_ProductFamilyFrom.ForeColor = System.Drawing.Color.Red;
-            this.LBLSTKP_ProductFamilyFrom.Location = new System.Drawing.Point(34, 25);
+            this.LBLSTKP_ProductFamilyFrom.Location = new System.Drawing.Point(14, 44);
             this.LBLSTKP_ProductFamilyFrom.Name = "LBLSTKP_ProductFamilyFrom";
             this.LBLSTKP_ProductFamilyFrom.Size = new System.Drawing.Size(105, 13);
             this.LBLSTKP_ProductFamilyFrom.TabIndex = 58;
             this.LBLSTKP_ProductFamilyFrom.Text = "Product Family From:";
             // 
-            // BTNClose
-            // 
-            this.BTNClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.BTNClose.Location = new System.Drawing.Point(345, 100);
-            this.BTNClose.Name = "BTNClose";
-            this.BTNClose.Size = new System.Drawing.Size(75, 23);
-            this.BTNClose.TabIndex = 3;
-            this.BTNClose.Text = "Close";
-            this.BTNClose.UseVisualStyleBackColor = true;
-            this.BTNClose.Click += new System.EventHandler(this.BTNClose_Click);
-            // 
             // BTNSave
             // 
-            this.BTNSave.Location = new System.Drawing.Point(21, 101);
+            this.BTNSave.Location = new System.Drawing.Point(21, 120);
             this.BTNSave.Name = "BTNSave";
             this.BTNSave.Size = new System.Drawing.Size(75, 23);
             this.BTNSave.TabIndex = 2;
@@ -108,25 +101,62 @@ namespace RogStock2025.Screens
             this.BTNSave.UseVisualStyleBackColor = true;
             this.BTNSave.Click += new System.EventHandler(this.BTNSave_Click);
             // 
+            // BTNClose
+            // 
+            this.BTNClose.FlatAppearance.BorderSize = 0;
+            this.BTNClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BTNClose.Image = ((System.Drawing.Image)(resources.GetObject("BTNClose.Image")));
+            this.BTNClose.Location = new System.Drawing.Point(352, 2);
+            this.BTNClose.Name = "BTNClose";
+            this.BTNClose.Size = new System.Drawing.Size(22, 22);
+            this.BTNClose.TabIndex = 61;
+            this.BTNClose.UseVisualStyleBackColor = true;
+            this.BTNClose.Click += new System.EventHandler(this.BTNClose_Click);
+            // 
+            // PANTitle
+            // 
+            this.PANTitle.Controls.Add(this.LBLTitle);
+            this.PANTitle.Location = new System.Drawing.Point(0, 0);
+            this.PANTitle.Name = "PANTitle";
+            this.PANTitle.Size = new System.Drawing.Size(347, 34);
+            this.PANTitle.TabIndex = 60;
+            this.PANTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PANTitle_MouseDown);
+            this.PANTitle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PANTitle_MouseMove);
+            this.PANTitle.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PANTitle_MouseUp);
+            // 
+            // LBLTitle
+            // 
+            this.LBLTitle.AutoSize = true;
+            this.LBLTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LBLTitle.Location = new System.Drawing.Point(9, 8);
+            this.LBLTitle.Name = "LBLTitle";
+            this.LBLTitle.Size = new System.Drawing.Size(46, 17);
+            this.LBLTitle.TabIndex = 0;
+            this.LBLTitle.Text = "label1";
+            // 
             // frmProductFamilyMassReplace
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(434, 134);
+            this.ClientSize = new System.Drawing.Size(376, 150);
+            this.Controls.Add(this.BTNClose);
+            this.Controls.Add(this.PANTitle);
             this.Controls.Add(this.CMBProdFamTo);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.CMBProdFamFrom);
             this.Controls.Add(this.LBLSTKP_ProductFamilyFrom);
-            this.Controls.Add(this.BTNClose);
             this.Controls.Add(this.BTNSave);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.Name = "frmProductFamilyMassReplace";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Product Family Mass Replace";
             this.Load += new System.EventHandler(this.frmProductFamilyMassReplace_Load);
             this.Shown += new System.EventHandler(this.frmProductFamilyMassReplace_Shown);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.frmProductFamilyMassReplace_Paint);
+            this.PANTitle.ResumeLayout(false);
+            this.PANTitle.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -138,7 +168,9 @@ namespace RogStock2025.Screens
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox CMBProdFamFrom;
         private System.Windows.Forms.Label LBLSTKP_ProductFamilyFrom;
-        private System.Windows.Forms.Button BTNClose;
         private System.Windows.Forms.Button BTNSave;
+        private Button BTNClose;
+        private Panel PANTitle;
+        private Label LBLTitle;
     }
 }

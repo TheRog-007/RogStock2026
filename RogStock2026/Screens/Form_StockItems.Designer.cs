@@ -80,7 +80,7 @@ namespace RogStock2025.Screens
             // 
             // BTNSave
             // 
-            this.BTNSave.Location = new System.Drawing.Point(18, 492);
+            this.BTNSave.Location = new System.Drawing.Point(18, 494);
             this.BTNSave.Name = "BTNSave";
             this.BTNSave.Size = new System.Drawing.Size(75, 23);
             this.BTNSave.TabIndex = 7;
@@ -92,7 +92,7 @@ namespace RogStock2025.Screens
             // 
             this.LBLSTKI_ItemID.AutoSize = true;
             this.LBLSTKI_ItemID.ForeColor = System.Drawing.Color.Red;
-            this.LBLSTKI_ItemID.Location = new System.Drawing.Point(8, 42);
+            this.LBLSTKI_ItemID.Location = new System.Drawing.Point(8, 44);
             this.LBLSTKI_ItemID.Name = "LBLSTKI_ItemID";
             this.LBLSTKI_ItemID.Size = new System.Drawing.Size(41, 13);
             this.LBLSTKI_ItemID.TabIndex = 2;
@@ -101,7 +101,7 @@ namespace RogStock2025.Screens
             // CMBSTKI_ItemID
             // 
             this.CMBSTKI_ItemID.FormattingEnabled = true;
-            this.CMBSTKI_ItemID.Location = new System.Drawing.Point(58, 39);
+            this.CMBSTKI_ItemID.Location = new System.Drawing.Point(58, 41);
             this.CMBSTKI_ItemID.MaxLength = 50;
             this.CMBSTKI_ItemID.Name = "CMBSTKI_ItemID";
             this.CMBSTKI_ItemID.Size = new System.Drawing.Size(304, 21);
@@ -114,7 +114,7 @@ namespace RogStock2025.Screens
             // 
             // BTNNew
             // 
-            this.BTNNew.Location = new System.Drawing.Point(368, 39);
+            this.BTNNew.Location = new System.Drawing.Point(368, 41);
             this.BTNNew.Name = "BTNNew";
             this.BTNNew.Size = new System.Drawing.Size(39, 20);
             this.BTNNew.TabIndex = 1;
@@ -126,7 +126,7 @@ namespace RogStock2025.Screens
             // 
             this.TABStockItem.Controls.Add(this.PGEDesc);
             this.TABStockItem.Controls.Add(this.PGEMedia);
-            this.TABStockItem.Location = new System.Drawing.Point(20, 115);
+            this.TABStockItem.Location = new System.Drawing.Point(20, 117);
             this.TABStockItem.Name = "TABStockItem";
             this.TABStockItem.SelectedIndex = 0;
             this.TABStockItem.Size = new System.Drawing.Size(732, 370);
@@ -275,7 +275,7 @@ namespace RogStock2025.Screens
             // CMBSTKI_UOM
             // 
             this.CMBSTKI_UOM.FormattingEnabled = true;
-            this.CMBSTKI_UOM.Location = new System.Drawing.Point(58, 66);
+            this.CMBSTKI_UOM.Location = new System.Drawing.Point(58, 68);
             this.CMBSTKI_UOM.MaxLength = 20;
             this.CMBSTKI_UOM.Name = "CMBSTKI_UOM";
             this.CMBSTKI_UOM.Size = new System.Drawing.Size(99, 21);
@@ -287,7 +287,7 @@ namespace RogStock2025.Screens
             // 
             this.LBLSTKU_Desc.AutoSize = true;
             this.LBLSTKU_Desc.ForeColor = System.Drawing.Color.Red;
-            this.LBLSTKU_Desc.Location = new System.Drawing.Point(8, 72);
+            this.LBLSTKU_Desc.Location = new System.Drawing.Point(8, 74);
             this.LBLSTKU_Desc.Name = "LBLSTKU_Desc";
             this.LBLSTKU_Desc.Size = new System.Drawing.Size(32, 13);
             this.LBLSTKU_Desc.TabIndex = 6;
@@ -298,7 +298,7 @@ namespace RogStock2025.Screens
             this.CHKSTKI_LocLot.AutoSize = true;
             this.CHKSTKI_LocLot.Checked = true;
             this.CHKSTKI_LocLot.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CHKSTKI_LocLot.Location = new System.Drawing.Point(558, 67);
+            this.CHKSTKI_LocLot.Location = new System.Drawing.Point(558, 69);
             this.CHKSTKI_LocLot.Name = "CHKSTKI_LocLot";
             this.CHKSTKI_LocLot.Size = new System.Drawing.Size(113, 17);
             this.CHKSTKI_LocLot.TabIndex = 5;
@@ -308,7 +308,7 @@ namespace RogStock2025.Screens
             // 
             // NUDSTKI_Price
             // 
-            this.NUDSTKI_Price.Location = new System.Drawing.Point(462, 66);
+            this.NUDSTKI_Price.Location = new System.Drawing.Point(462, 68);
             this.NUDSTKI_Price.Maximum = new decimal(new int[] {
             9999,
             0,
@@ -331,7 +331,7 @@ namespace RogStock2025.Screens
             // LBLSTKI_Price
             // 
             this.LBLSTKI_Price.AutoSize = true;
-            this.LBLSTKI_Price.Location = new System.Drawing.Point(412, 70);
+            this.LBLSTKI_Price.Location = new System.Drawing.Point(412, 72);
             this.LBLSTKI_Price.Name = "LBLSTKI_Price";
             this.LBLSTKI_Price.Size = new System.Drawing.Size(31, 13);
             this.LBLSTKI_Price.TabIndex = 10;
@@ -340,7 +340,7 @@ namespace RogStock2025.Screens
             // CMBSTKI_ProductFamily
             // 
             this.CMBSTKI_ProductFamily.FormattingEnabled = true;
-            this.CMBSTKI_ProductFamily.Location = new System.Drawing.Point(266, 66);
+            this.CMBSTKI_ProductFamily.Location = new System.Drawing.Point(266, 68);
             this.CMBSTKI_ProductFamily.MaxLength = 30;
             this.CMBSTKI_ProductFamily.Name = "CMBSTKI_ProductFamily";
             this.CMBSTKI_ProductFamily.Size = new System.Drawing.Size(121, 21);
@@ -352,7 +352,7 @@ namespace RogStock2025.Screens
             // 
             this.LBLSTKI_ProductFamily.AutoSize = true;
             this.LBLSTKI_ProductFamily.ForeColor = System.Drawing.Color.Red;
-            this.LBLSTKI_ProductFamily.Location = new System.Drawing.Point(180, 72);
+            this.LBLSTKI_ProductFamily.Location = new System.Drawing.Point(180, 74);
             this.LBLSTKI_ProductFamily.Name = "LBLSTKI_ProductFamily";
             this.LBLSTKI_ProductFamily.Size = new System.Drawing.Size(76, 13);
             this.LBLSTKI_ProductFamily.TabIndex = 8;
@@ -367,7 +367,7 @@ namespace RogStock2025.Screens
             // 
             // BTNUndo
             // 
-            this.BTNUndo.Location = new System.Drawing.Point(183, 492);
+            this.BTNUndo.Location = new System.Drawing.Point(183, 494);
             this.BTNUndo.Name = "BTNUndo";
             this.BTNUndo.Size = new System.Drawing.Size(75, 23);
             this.BTNUndo.TabIndex = 8;
@@ -377,7 +377,7 @@ namespace RogStock2025.Screens
             // 
             // BTNDelete
             // 
-            this.BTNDelete.Location = new System.Drawing.Point(287, 492);
+            this.BTNDelete.Location = new System.Drawing.Point(287, 494);
             this.BTNDelete.Name = "BTNDelete";
             this.BTNDelete.Size = new System.Drawing.Size(75, 23);
             this.BTNDelete.TabIndex = 9;
@@ -388,7 +388,7 @@ namespace RogStock2025.Screens
             // TXTHidden
             // 
             this.TXTHidden.BackColor = System.Drawing.SystemColors.Control;
-            this.TXTHidden.Location = new System.Drawing.Point(558, 89);
+            this.TXTHidden.Location = new System.Drawing.Point(558, 91);
             this.TXTHidden.Name = "TXTHidden";
             this.TXTHidden.Size = new System.Drawing.Size(100, 20);
             this.TXTHidden.TabIndex = 11;
@@ -399,7 +399,7 @@ namespace RogStock2025.Screens
             this.textBox1.BackColor = System.Drawing.SystemColors.Control;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.ForeColor = System.Drawing.SystemColors.Control;
-            this.textBox1.Location = new System.Drawing.Point(376, 270);
+            this.textBox1.Location = new System.Drawing.Point(376, 272);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(10, 13);
             this.textBox1.TabIndex = 44;
@@ -407,7 +407,7 @@ namespace RogStock2025.Screens
             // 
             // BTNFind
             // 
-            this.BTNFind.Location = new System.Drawing.Point(424, 39);
+            this.BTNFind.Location = new System.Drawing.Point(424, 41);
             this.BTNFind.Name = "BTNFind";
             this.BTNFind.Size = new System.Drawing.Size(39, 20);
             this.BTNFind.TabIndex = 45;
@@ -435,6 +435,8 @@ namespace RogStock2025.Screens
             // 
             // BTNClose
             // 
+            this.BTNClose.FlatAppearance.BorderSize = 0;
+            this.BTNClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BTNClose.Image = ((System.Drawing.Image)(resources.GetObject("BTNClose.Image")));
             this.BTNClose.Location = new System.Drawing.Point(729, 3);
             this.BTNClose.Name = "BTNClose";

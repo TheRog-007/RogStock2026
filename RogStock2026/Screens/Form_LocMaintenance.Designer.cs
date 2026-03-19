@@ -35,6 +35,7 @@ namespace RogStock2025.Screens
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLocMaintenance));
             this.TXTHidden = new System.Windows.Forms.TextBox();
             this.BTNDelete = new System.Windows.Forms.Button();
             this.BTNUndo = new System.Windows.Forms.Button();
@@ -44,7 +45,6 @@ namespace RogStock2025.Screens
             this.BTNNew = new System.Windows.Forms.Button();
             this.CMBLOC_ItemID = new System.Windows.Forms.ComboBox();
             this.LBLLOC_ItemID = new System.Windows.Forms.Label();
-            this.BTNClose = new System.Windows.Forms.Button();
             this.BTNSave = new System.Windows.Forms.Button();
             this.TXTLOC_Desc = new System.Windows.Forms.TextBox();
             this.LBLLOC_Desc = new System.Windows.Forms.Label();
@@ -52,7 +52,11 @@ namespace RogStock2025.Screens
             this.CMBLOC_Location = new System.Windows.Forms.ComboBox();
             this.LBLSTKD_Desc = new System.Windows.Forms.Label();
             this.BTNFind = new System.Windows.Forms.Button();
+            this.BTNClose = new System.Windows.Forms.Button();
+            this.PANTitle = new System.Windows.Forms.Panel();
+            this.LBLTitle = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.NUDLOC_Qty)).BeginInit();
+            this.PANTitle.SuspendLayout();
             this.SuspendLayout();
             // 
             // TXTHidden
@@ -60,7 +64,7 @@ namespace RogStock2025.Screens
             this.TXTHidden.BackColor = System.Drawing.SystemColors.Control;
             this.TXTHidden.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.TXTHidden.ForeColor = System.Drawing.SystemColors.Control;
-            this.TXTHidden.Location = new System.Drawing.Point(507, 198);
+            this.TXTHidden.Location = new System.Drawing.Point(507, 221);
             this.TXTHidden.Name = "TXTHidden";
             this.TXTHidden.Size = new System.Drawing.Size(0, 13);
             this.TXTHidden.TabIndex = 27;
@@ -68,7 +72,7 @@ namespace RogStock2025.Screens
             // 
             // BTNDelete
             // 
-            this.BTNDelete.Location = new System.Drawing.Point(254, 233);
+            this.BTNDelete.Location = new System.Drawing.Point(254, 256);
             this.BTNDelete.Name = "BTNDelete";
             this.BTNDelete.Size = new System.Drawing.Size(75, 23);
             this.BTNDelete.TabIndex = 8;
@@ -78,7 +82,7 @@ namespace RogStock2025.Screens
             // 
             // BTNUndo
             // 
-            this.BTNUndo.Location = new System.Drawing.Point(150, 233);
+            this.BTNUndo.Location = new System.Drawing.Point(150, 256);
             this.BTNUndo.Name = "BTNUndo";
             this.BTNUndo.Size = new System.Drawing.Size(75, 23);
             this.BTNUndo.TabIndex = 7;
@@ -91,7 +95,7 @@ namespace RogStock2025.Screens
             this.CHK_LOC_NonNet.AutoSize = true;
             this.CHK_LOC_NonNet.Checked = true;
             this.CHK_LOC_NonNet.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CHK_LOC_NonNet.Location = new System.Drawing.Point(153, 194);
+            this.CHK_LOC_NonNet.Location = new System.Drawing.Point(153, 217);
             this.CHK_LOC_NonNet.Name = "CHK_LOC_NonNet";
             this.CHK_LOC_NonNet.Size = new System.Drawing.Size(72, 17);
             this.CHK_LOC_NonNet.TabIndex = 5;
@@ -100,7 +104,7 @@ namespace RogStock2025.Screens
             // 
             // NUDLOC_Qty
             // 
-            this.NUDLOC_Qty.Location = new System.Drawing.Point(73, 193);
+            this.NUDLOC_Qty.Location = new System.Drawing.Point(73, 216);
             this.NUDLOC_Qty.Maximum = new decimal(new int[] {
             9999,
             0,
@@ -115,7 +119,7 @@ namespace RogStock2025.Screens
             // 
             this.LBLLOC_Qty.AutoSize = true;
             this.LBLLOC_Qty.ForeColor = System.Drawing.Color.Red;
-            this.LBLLOC_Qty.Location = new System.Drawing.Point(11, 193);
+            this.LBLLOC_Qty.Location = new System.Drawing.Point(11, 216);
             this.LBLLOC_Qty.Name = "LBLLOC_Qty";
             this.LBLLOC_Qty.Size = new System.Drawing.Size(49, 13);
             this.LBLLOC_Qty.TabIndex = 25;
@@ -123,7 +127,7 @@ namespace RogStock2025.Screens
             // 
             // BTNNew
             // 
-            this.BTNNew.Location = new System.Drawing.Point(715, 14);
+            this.BTNNew.Location = new System.Drawing.Point(715, 39);
             this.BTNNew.Name = "BTNNew";
             this.BTNNew.Size = new System.Drawing.Size(39, 20);
             this.BTNNew.TabIndex = 2;
@@ -134,7 +138,7 @@ namespace RogStock2025.Screens
             // CMBLOC_ItemID
             // 
             this.CMBLOC_ItemID.FormattingEnabled = true;
-            this.CMBLOC_ItemID.Location = new System.Drawing.Point(59, 12);
+            this.CMBLOC_ItemID.Location = new System.Drawing.Point(59, 37);
             this.CMBLOC_ItemID.MaxLength = 50;
             this.CMBLOC_ItemID.Name = "CMBLOC_ItemID";
             this.CMBLOC_ItemID.Size = new System.Drawing.Size(304, 21);
@@ -147,26 +151,15 @@ namespace RogStock2025.Screens
             // 
             this.LBLLOC_ItemID.AutoSize = true;
             this.LBLLOC_ItemID.ForeColor = System.Drawing.Color.Red;
-            this.LBLLOC_ItemID.Location = new System.Drawing.Point(9, 15);
+            this.LBLLOC_ItemID.Location = new System.Drawing.Point(9, 40);
             this.LBLLOC_ItemID.Name = "LBLLOC_ItemID";
             this.LBLLOC_ItemID.Size = new System.Drawing.Size(44, 13);
             this.LBLLOC_ItemID.TabIndex = 15;
             this.LBLLOC_ItemID.Text = "Item ID:";
             // 
-            // BTNClose
-            // 
-            this.BTNClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.BTNClose.Location = new System.Drawing.Point(674, 232);
-            this.BTNClose.Name = "BTNClose";
-            this.BTNClose.Size = new System.Drawing.Size(75, 23);
-            this.BTNClose.TabIndex = 9;
-            this.BTNClose.Text = "Close";
-            this.BTNClose.UseVisualStyleBackColor = true;
-            this.BTNClose.Click += new System.EventHandler(this.BTNClose_Click);
-            // 
             // BTNSave
             // 
-            this.BTNSave.Location = new System.Drawing.Point(11, 233);
+            this.BTNSave.Location = new System.Drawing.Point(11, 256);
             this.BTNSave.Name = "BTNSave";
             this.BTNSave.Size = new System.Drawing.Size(75, 23);
             this.BTNSave.TabIndex = 6;
@@ -176,7 +169,7 @@ namespace RogStock2025.Screens
             // 
             // TXTLOC_Desc
             // 
-            this.TXTLOC_Desc.Location = new System.Drawing.Point(11, 79);
+            this.TXTLOC_Desc.Location = new System.Drawing.Point(11, 102);
             this.TXTLOC_Desc.MaxLength = 523;
             this.TXTLOC_Desc.Multiline = true;
             this.TXTLOC_Desc.Name = "TXTLOC_Desc";
@@ -188,7 +181,7 @@ namespace RogStock2025.Screens
             // 
             this.LBLLOC_Desc.AutoSize = true;
             this.LBLLOC_Desc.ForeColor = System.Drawing.Color.Black;
-            this.LBLLOC_Desc.Location = new System.Drawing.Point(9, 63);
+            this.LBLLOC_Desc.Location = new System.Drawing.Point(9, 86);
             this.LBLLOC_Desc.Name = "LBLLOC_Desc";
             this.LBLLOC_Desc.Size = new System.Drawing.Size(60, 13);
             this.LBLLOC_Desc.TabIndex = 28;
@@ -198,7 +191,7 @@ namespace RogStock2025.Screens
             // 
             this.LBLLOC_Location.AutoSize = true;
             this.LBLLOC_Location.ForeColor = System.Drawing.Color.Red;
-            this.LBLLOC_Location.Location = new System.Drawing.Point(423, 17);
+            this.LBLLOC_Location.Location = new System.Drawing.Point(423, 42);
             this.LBLLOC_Location.Name = "LBLLOC_Location";
             this.LBLLOC_Location.Size = new System.Drawing.Size(82, 13);
             this.LBLLOC_Location.TabIndex = 30;
@@ -207,7 +200,7 @@ namespace RogStock2025.Screens
             // CMBLOC_Location
             // 
             this.CMBLOC_Location.FormattingEnabled = true;
-            this.CMBLOC_Location.Location = new System.Drawing.Point(507, 13);
+            this.CMBLOC_Location.Location = new System.Drawing.Point(507, 38);
             this.CMBLOC_Location.MaxLength = 30;
             this.CMBLOC_Location.Name = "CMBLOC_Location";
             this.CMBLOC_Location.Size = new System.Drawing.Size(200, 21);
@@ -221,14 +214,14 @@ namespace RogStock2025.Screens
             // 
             this.LBLSTKD_Desc.AutoSize = true;
             this.LBLSTKD_Desc.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LBLSTKD_Desc.Location = new System.Drawing.Point(11, 40);
+            this.LBLSTKD_Desc.Location = new System.Drawing.Point(11, 63);
             this.LBLSTKD_Desc.Name = "LBLSTKD_Desc";
             this.LBLSTKD_Desc.Size = new System.Drawing.Size(0, 17);
             this.LBLSTKD_Desc.TabIndex = 31;
             // 
             // BTNFind
             // 
-            this.BTNFind.Location = new System.Drawing.Point(373, 12);
+            this.BTNFind.Location = new System.Drawing.Point(373, 37);
             this.BTNFind.Name = "BTNFind";
             this.BTNFind.Size = new System.Drawing.Size(39, 20);
             this.BTNFind.TabIndex = 73;
@@ -236,11 +229,43 @@ namespace RogStock2025.Screens
             this.BTNFind.UseVisualStyleBackColor = true;
             this.BTNFind.Click += new System.EventHandler(this.BTNFind_Click);
             // 
+            // BTNClose
+            // 
+            this.BTNClose.FlatAppearance.BorderSize = 0;
+            this.BTNClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BTNClose.Image = ((System.Drawing.Image)(resources.GetObject("BTNClose.Image")));
+            this.BTNClose.Location = new System.Drawing.Point(740, 2);
+            this.BTNClose.Name = "BTNClose";
+            this.BTNClose.Size = new System.Drawing.Size(22, 22);
+            this.BTNClose.TabIndex = 75;
+            this.BTNClose.UseVisualStyleBackColor = true;
+            this.BTNClose.Click += new System.EventHandler(this.BTNClose_Click);
+            // 
+            // PANTitle
+            // 
+            this.PANTitle.Controls.Add(this.LBLTitle);
+            this.PANTitle.Location = new System.Drawing.Point(0, 0);
+            this.PANTitle.Name = "PANTitle";
+            this.PANTitle.Size = new System.Drawing.Size(733, 34);
+            this.PANTitle.TabIndex = 74;
+            // 
+            // LBLTitle
+            // 
+            this.LBLTitle.AutoSize = true;
+            this.LBLTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LBLTitle.Location = new System.Drawing.Point(9, 8);
+            this.LBLTitle.Name = "LBLTitle";
+            this.LBLTitle.Size = new System.Drawing.Size(46, 17);
+            this.LBLTitle.TabIndex = 0;
+            this.LBLTitle.Text = "label1";
+            // 
             // frmLocMaintenance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(765, 270);
+            this.ClientSize = new System.Drawing.Size(765, 283);
+            this.Controls.Add(this.BTNClose);
+            this.Controls.Add(this.PANTitle);
             this.Controls.Add(this.BTNFind);
             this.Controls.Add(this.LBLSTKD_Desc);
             this.Controls.Add(this.CMBLOC_Location);
@@ -256,9 +281,8 @@ namespace RogStock2025.Screens
             this.Controls.Add(this.BTNNew);
             this.Controls.Add(this.CMBLOC_ItemID);
             this.Controls.Add(this.LBLLOC_ItemID);
-            this.Controls.Add(this.BTNClose);
             this.Controls.Add(this.BTNSave);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.Name = "frmLocMaintenance";
             this.RightToLeftLayout = true;
@@ -268,7 +292,10 @@ namespace RogStock2025.Screens
             this.Load += new System.EventHandler(this.Form_LocMaintenance_Load);
             this.Shown += new System.EventHandler(this.frmLocMaintenance_Shown);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form_LocMaintenance_Paint);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.frmLocMaintenance_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.NUDLOC_Qty)).EndInit();
+            this.PANTitle.ResumeLayout(false);
+            this.PANTitle.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -285,7 +312,6 @@ namespace RogStock2025.Screens
         private System.Windows.Forms.Button BTNNew;
         private System.Windows.Forms.ComboBox CMBLOC_ItemID;
         private System.Windows.Forms.Label LBLLOC_ItemID;
-        private System.Windows.Forms.Button BTNClose;
         private System.Windows.Forms.Button BTNSave;
         private System.Windows.Forms.TextBox TXTLOC_Desc;
         private System.Windows.Forms.Label LBLLOC_Desc;
@@ -293,5 +319,8 @@ namespace RogStock2025.Screens
         private System.Windows.Forms.ComboBox CMBLOC_Location;
         private System.Windows.Forms.Label LBLSTKD_Desc;
         private Button BTNFind;
+        private Button BTNClose;
+        private Panel PANTitle;
+        private Label LBLTitle;
     }
 }

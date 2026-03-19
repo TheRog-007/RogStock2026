@@ -109,38 +109,12 @@ namespace RogStock2025.Screens
             this.CMBLOT_Location.Text = String.Empty;
             //populate locations for item list
             Modules.clsData.PopulateComboBoxes(this.CMBLOT_Location, Modules.clsTables.CNST_STR_STOCK_LOC, "LOC_ItemID", this.CMBLOT_ItemID.Text, "", "", "", false);
-            //populate locations for item list
-            GetStockDescription();
+            //get stock item description
+            this.LBLItemDesc.Text = Modules.clsData.GetStockDescription(this.CMBLOT_ItemID.Text);
         }
 
         //data
-        private void GetStockDescription()
-        {
-            /*
-                 Created 27/02/2025 By Roger Williams
 
-                 Reads description record from Stock_Description
-
-            */
-            SqlDataReader SQLRead;
-            SqlCommand SQLCmdDesc;
-
-            SQLCmdDesc = new SqlCommand("SELECT STKD_Desc FROM " + Modules.clsTables.CNST_STR_STOCK_DESCRIPTION + " WHERE STKD_ItemID = '" + this.CMBLOT_ItemID.Text + "'", SQLConn);
-            SQLRead = SQLCmdDesc.ExecuteReader();
-
-            //load from dataset
-            if (SQLRead.HasRows)
-            {
-                SQLRead.Read();
-                this.LBLSTKD_Desc.Text = SQLRead["STKD_Desc"].ToString();
-            }
-            else
-            {
-                this.LBLSTKD_Desc.Text = string.Empty; ;
-            }
-
-            SQLRead.Close();
-        }
         private void DeleteRecord()
         {
             /*
@@ -505,19 +479,6 @@ namespace RogStock2025.Screens
             }
         }
 
-        private void frmLotMaintenance_Paint(object sender, PaintEventArgs e)
-        {
-            /*
-                Created 25/02/2025 By Roger Williams
-
-                Draws line across screen
-
-              */
-
-            //draw lines
-            e.Graphics.DrawLine(penTemp, 0, 60, this.Width, 60);
-            e.Graphics.DrawLine(penTemp, 0, 200, this.Width, 200);
-        }
 
         private void BTNClose_Click(object sender, EventArgs e)
         {
@@ -604,6 +565,7 @@ namespace RogStock2025.Screens
 
 
             */
+
             blnOk = true;
             ActivateLocationComboBox();
         }
@@ -720,7 +682,7 @@ namespace RogStock2025.Screens
                 {
                     this.TXTHidden.Text = this.CMBLOT_ItemID.Text;
                     ActivateLocationComboBox();
-                }
+                }                   
             }
 
             blnOk = false;
@@ -752,5 +714,188 @@ namespace RogStock2025.Screens
             }
         }
 
+        private void frmLotMaintenance_Paint(object sender, PaintEventArgs e)
+        {
+            /*
+                Created 25/02/2025 By Roger Williams
+
+                Draws line across screen
+
+              */
+
+            //draw lines
+            e.Graphics.DrawLine(penTemp, 0, 94, this.Width, 94);
+            e.Graphics.DrawLine(penTemp, 0, 240, this.Width, 240);
+            //fill titlebar with PANTitle back colour
+            Modules.clsView.FillTitleBar(e.Graphics, this.PANTitle.BackColor, this.PANTitle.Width, this.Width - this.PANTitle.Width, this.PANTitle.Height);
+        }
+
+        private void frmLotMaintenance_MouseDown(object sender, MouseEventArgs e)
+        {
+            //if pointer inside "title bar"
+            if (e.Y <= Modules.clsView.CNST_INT_TITLEBARHEIGHT)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    //move form
+                    Modules.clsView.User32_DLL.ReleaseCapture();
+                    Modules.clsView.User32_DLL.SendMessage(this.Handle, Modules.clsView.WM_NCLBUTTONDOWN, (IntPtr)Modules.clsView.HTCAPTION, new IntPtr(0));
+                }
+            }
+        }
+
+      public static void PopulateComboBoxes(ComboBox CMBTemp, string strTable, string strKeyField, string strKeyFieldValue, string strSecondFieldName, string strSecondFieldValue, string strWHERE, bool blnDistinct)
+        {
+            /*
+              Created 17/02/2025 By Roger Williams
+
+              Populates the comboboxes with table values using first non
+              identity seed as column, unless user specifies a key field
+              and optional sort value
+
+              VARS
+
+              CMBTemp             - combobox to populate
+              strTable            - table to read from
+          
+              Optional:
+             
+              strKeyField         - key field name 
+              strKeyFieldValue    - key field value always handled as text 
+                                    in a commercial system would also pass
+                                    data type
+              strSecondFieldName  - another field name 
+              strSecondFieldValue - another field value always handled as text 
+                                    in a commercial system would also pass
+                                    data type
+             strWHERE             - specify WHERE clause
+             blnDistinct          - use DISTINCT 
+            
+             Note: if using blnDistinct strKeyField MUST have a value!
+
+
+            */
+
+            SqlConnection SQLConn;
+            SqlCommand SQLCmd;
+            SqlDataReader SQLRead;
+
+            //clear combo
+            CMBTemp.Items.Clear();
+
+            try
+            {
+                using (SQLConn = new SqlConnection(CNST_STR_ODBC))
+                {
+                    SQLConn.Open();
+                    SQLCmd = SQLConn.CreateCommand();
+
+                    if (blnDistinct)
+                    {
+                        SQLCmd.CommandText = "SELECT DISTINCT " + strKeyField + " FROM " + strTable;
+                    }
+                    else
+                    {
+                        SQLCmd.CommandText = "SELECT * FROM " + strTable;
+                    }
+                    if (strKeyField.Length != 0 && blnDistinct == false)
+                    {
+                        SQLCmd.CommandText += " WHERE " + strKeyField + " = '" + strKeyFieldValue + "'";
+                    }
+
+                    if (strSecondFieldName.Length != 0)
+                    {
+                        SQLCmd.CommandText += " AND " + strSecondFieldName + " = '" + strSecondFieldValue + "'";
+                    }
+
+                    if (strWHERE.Length != 0)
+                    {
+                        if (strKeyField.Length != 0)
+                        {
+                            strWHERE = strWHERE.ToUpper();
+                            strWHERE = strWHERE.Replace("WHERE", " AND ");
+                            SQLCmd.CommandText += " " + strWHERE;
+                        }
+                        else
+                        {
+                            SQLCmd.CommandText += " " + strWHERE;
+                        }
+                    }
+                    //add ;
+                    SQLCmd.CommandText += ";";
+
+                    SQLCmd.CommandType = CommandType.Text;
+                    SQLRead = SQLCmd.ExecuteReader();
+
+                    while (SQLRead.Read())
+                    {
+                        if (strTable == Modules.clsTables.CNST_STR_LOCTRN)
+                        {
+                            CMBTemp.Items.Add(SQLRead[1].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_LOTTRN)
+                        {
+                            CMBTemp.Items.Add(SQLRead[1].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_STOCK_ITEMS)
+                        {
+                            CMBTemp.Items.Add(SQLRead[1].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_STOCK_LOT)
+                        {
+                            CMBTemp.Items.Add(SQLRead[0].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_STOCK_VENDORS)
+                        {
+                            CMBTemp.Items.Add(SQLRead[2].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_LOGIN)
+                        {
+                            CMBTemp.Items.Add(SQLRead[1].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_STOCK_LOC)
+                        {
+                            CMBTemp.Items.Add(SQLRead[2].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_STOCK_PRODUCTFAMILY)
+                        {
+                            CMBTemp.Items.Add(SQLRead[1].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_STOCK_UOM)
+                        {
+                            CMBTemp.Items.Add(SQLRead[1].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_MENU_GROUPS)
+                        {
+                            CMBTemp.Items.Add(SQLRead[0].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_MENU_MENUITEMS)
+                        {
+                            CMBTemp.Items.Add(SQLRead[1].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_MENU_AREAS)
+                        {
+                            CMBTemp.Items.Add(SQLRead[1].ToString());
+                        }
+                        if (strTable == Modules.clsTables.CNST_STR_MENU_USERGROUPS)
+                        {
+                            CMBTemp.Items.Add(SQLRead[0].ToString());
+                        }
+                    }
+
+                    SQLRead.Close();
+                    SQLConn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                //Whoops!
+                MessageBox.Show("Error Opening Table " + strTable + " - Check SQL Server\n\n" + ex.Message, "Database Open Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+
+
+    //**class end
     }
 }

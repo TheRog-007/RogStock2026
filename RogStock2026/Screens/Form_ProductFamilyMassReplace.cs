@@ -35,8 +35,9 @@ namespace RogStock2025.Screens
         bool blnShow = true;
         Pen penTemp;
 
-
-
+        //for manual mouse move of form
+        private bool blnDragging = false;
+        private Point pntLastLocation;
 
         public frmProductFamilyMassReplace()
         {
@@ -188,19 +189,7 @@ namespace RogStock2025.Screens
             SaveRecord();
         }
 
-        private void frmProductFamilyMassReplace_Paint(object sender, PaintEventArgs e)
-        {
-            /*
-              Created 25/02/2025 By Roger Williams
 
-              Draws line across screen
-
-            */
-
-
-            //draw line
-            e.Graphics.DrawLine(penTemp, 0, 100, this.Width, 100);
-        }
 
         private void CMBProdFamFrom_SelectedValueChanged(object sender, EventArgs e)
         {
@@ -291,6 +280,45 @@ namespace RogStock2025.Screens
                 MessageBox.Show("Cannot Continue No Product Family Records Found", "load Failed!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 BTNClose_Click(sender, e);
             }
+        }
+
+        private void frmProductFamilyMassReplace_Paint(object sender, PaintEventArgs e)
+        {
+            /*
+              Created 25/02/2025 By Roger Williams
+
+              Draws line across screen
+
+            */
+
+
+            //draw line
+            e.Graphics.DrawLine(penTemp, 0, 134, this.Width, 134);
+            //fill titlebar with PANTitle back colour
+            Modules.clsView.FillTitleBar(e.Graphics, this.PANTitle.BackColor, this.PANTitle.Width, this.Width - this.PANTitle.Width, this.PANTitle.Height);
+        }
+
+        private void PANTitle_MouseDown(object sender, MouseEventArgs e)
+        {
+            blnDragging = true;
+            pntLastLocation = e.Location;
+        }
+
+        private void PANTitle_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (blnDragging)
+            {
+                this.Location = new Point(
+                (this.Location.X - pntLastLocation.X) + e.X,
+                (this.Location.Y - pntLastLocation.Y) + e.Y);
+
+                this.Update();
+            }
+        }
+
+        private void PANTitle_MouseUp(object sender, MouseEventArgs e)
+        {
+            blnDragging = false;
         }
     }
 }

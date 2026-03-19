@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using RogStock2025.Screens;
+using RogStock2026.Screens;
 
-namespace RogStock2025
+namespace RogStock2026
 {
     internal static class Program
     {
@@ -17,7 +17,7 @@ namespace RogStock2025
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmMain());
+            Application.Run(new frmLogin());              //new frmMain());
         }
     }
 }

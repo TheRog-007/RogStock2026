@@ -579,19 +579,7 @@ namespace RogStock2025.Screens
             }
         }
 
-        private void Form_LocMaintenance_Paint(object sender, PaintEventArgs e)
-        {
-            /*
-              Created 25/02/2025 By Roger Williams
 
-              Draws line across screen
-            
-            */
-
-            //draw lines
-            e.Graphics.DrawLine(penTemp, 0, 70, this.Width, 70);
-            e.Graphics.DrawLine(penTemp, 0, 210, this.Width, 210);
-        }
 
         private void BTNClose_Click(object sender, EventArgs e)
         {
@@ -837,5 +825,40 @@ namespace RogStock2025.Screens
                 this.CMBLOC_ItemID.Text = Modules.clsData.objFindSelected.ToString();
             }
         }
+
+        private void frmLocMaintenance_MouseDown(object sender, MouseEventArgs e)
+        {
+            //if pointer inside "title bar"
+            if (e.Y <= Modules.clsView.CNST_INT_TITLEBARHEIGHT)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    //move form
+                    Modules.clsView.User32_DLL.ReleaseCapture();
+                    Modules.clsView.User32_DLL.SendMessage(this.Handle, Modules.clsView.WM_NCLBUTTONDOWN, (IntPtr)Modules.clsView.HTCAPTION, new IntPtr(0));
+                }
+            }
+        }
+
+        private void Form_LocMaintenance_Paint(object sender, PaintEventArgs e)
+        {
+            /*
+              Created 25/02/2025 By Roger Williams
+
+              Draws line across screen
+            
+            */
+
+            //draw lines
+            e.Graphics.DrawLine(penTemp, 0, 92, this.Width, 92);
+            e.Graphics.DrawLine(penTemp, 0, 242, this.Width, 242);
+
+            //fill titlebar with PANTitle back colour
+            Modules.clsView.FillTitleBar(e.Graphics, this.PANTitle.BackColor, this.PANTitle.Width, this.Width - this.PANTitle.Width, this.PANTitle.Height);
+
+        }
+
+        //*********end class***
+
     }
 }

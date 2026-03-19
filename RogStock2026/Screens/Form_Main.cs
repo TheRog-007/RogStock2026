@@ -1,25 +1,24 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlTypes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Data.SqlClient;
-using System.Drawing.Drawing2D;
-using System.IO;
-using System.Reflection;
-using static RogStock2025.Modules.clsView;
-using System.Security.Cryptography.X509Certificates;
-//using static System.Net.Mime.MediaTypeNames;
 
+           /*
+                  Modified 03/03/2026 By Roger Williams
 
-namespace RogStock2025.Screens
-{
-    public partial class frmMain : Form
-    {       /*
+                  implemented titlebar less mod however this form refuses to receive mouse messages(!?)
+                  so put in a manual version using mouse message events in PANTitle...
+
+              
                    Modified 28/07/2025 By Roger Williams
         
                    Now supports theme colours for forms (not main menu yet)
@@ -33,7 +32,10 @@ namespace RogStock2025.Screens
 
             */
 
-
+namespace RogStock2026.Screens
+{
+public partial class frmMain : Form
+{
         //used by "mainmenu" button
         Brush bruShowHide1 = new SolidBrush(Color.White);
         Brush bruShowHide2 = new SolidBrush(Color.GreenYellow);
@@ -42,57 +44,40 @@ namespace RogStock2025.Screens
         Point pntShowHide = new Point(10, 10);
         Font fntShowHide = new Font("Segoe UI", 11, FontStyle.Bold);
         int intColourSwap = 0;
+        Brush bruTemp = null;
 
-        ////used by "mainmenu"
+        //used by button "showhide"
         bool blnShowMenu = false;
-        Brush bruMenu = new SolidBrush(Color.White);
-        Point pntMenu = new Point(10, 4);
-        Font fntMenu = new Font("Segoe UI", 10, FontStyle.Bold);
 
         int intPANSectionsheight = 0;
 
+        //for manual mouse move of form
+        bool blnDragging = false;
+        Point pntLastLocation;
 
-        public frmMain()
-        {
-            InitializeComponent();
-            //apply colour "theme" to menu
-            this.MNUMainMenu.Renderer = new Modules.clsView.clsMenuColourScheme();
-
-        }
-
+    public frmMain()
+    {
+        InitializeComponent();
+        //apply colour "theme" to menu
+        this.MNUMainMenu.Renderer = new Modules.clsView.clsMenuColourScheme();
+    }
 
         //****custom subs/funcs ***********+
 
-        private void Custom_Paint(object sender, PaintEventArgs e)
-        {
-            Rectangle rctTemp = e.ClipRectangle;
-
-            if (sender is ToolStripMenuItem)
-            {
-                e.Graphics.FillRectangle(Brushes.SteelBlue, rctTemp);
-                e.Graphics.DrawString(((ToolStripMenuItem)sender).Text, fntMenu, bruMenu, pntMenu);
-            }
-            if (sender is MenuStrip)
-            {
-                e.Graphics.FillRectangle(Brushes.SteelBlue, rctTemp);
-            }
-        }
 
         public void WindowMenuClickEvent(object sender, EventArgs e)
         {
             /*
 
-                  Created 07/08/2025 By Roger Williams
-           
-                  Opens menu item for Windows menu
+              Created 07/08/2025 By Roger Williams
 
-            */
+              Opens menu item in open Windows menu
 
-            //discover which button
+        */
 
-            //            ShowMenuItem(this.MNUItemListing.Text);
+        //discover which button
 
-            if (sender is ToolStripMenuItem)
+        if (sender is ToolStripMenuItem)
             {
                 if (((ToolStripMenuItem)sender).Name == "MNUWindows")
                 {
@@ -109,14 +94,9 @@ namespace RogStock2025.Screens
 
                   Created 05/08/2025 By Roger Williams
            
-                  Opens menu item
+                  Opens menu item based on senders tag
 
             */
-
-            //discover which button
-
-            //            ShowMenuItem(this.MNUItemListing.Text);
-
 
             if (((ToolStripMenuItem)sender).Tag == null)
             {
@@ -124,7 +104,6 @@ namespace RogStock2025.Screens
             }
 
             Modules.clsView.OpenForm(((ToolStripMenuItem)sender).Tag.ToString());
-
         }
 
         private void MenuButtonClickEvent(object sender, EventArgs e)
@@ -135,7 +114,8 @@ namespace RogStock2025.Screens
            
                   Populates menus with user menu items
                   Opens first visible menu e.g. Forms so user knows menu items present
-            
+                  Creates Form/Report/Operation menus based on what user has access to as listed in: aryUserMenuItems 
+                  Sets new menu items tag to its object e.g.: frmJobs
 
             */
 
@@ -144,7 +124,7 @@ namespace RogStock2025.Screens
             ToolStripMenuItem MNUTemp = null;
             string strTemp = String.Empty;
 
-            //clear existing mneu items
+            //clear existing menu items
             this.MNUForms.DropDownItems.Clear();
             this.MNUReports.DropDownItems.Clear();
             this.MNUOperations.DropDownItems.Clear();
@@ -154,19 +134,19 @@ namespace RogStock2025.Screens
 
 
             //create form menu elements
-            for (intNum = 1; aryUserMenuItems[0, intNum, 0, 0] != null; intNum++)
+            for (intNum = 1; Modules.clsView.aryUserMenuItems[0, intNum, 0, 0] != null; intNum++)
             {
                 blnCont = true;
 
                 //get forms
-                if (aryUserMenuItems[0, intNum, 0, 0] == "Form" && aryUserMenuItems[intNum, 0, 0, 0] == ((Button)sender).Text)
+                if (Modules.clsView.aryUserMenuItems[0, intNum, 0, 0] == "Form" && Modules.clsView.aryUserMenuItems[intNum, 0, 0, 0] == ((Button)sender).Text)
                 {
                     //make sure does not already exist!
                     foreach (ToolStripMenuItem MNUFind in this.MNUForms.DropDownItems)
                     {
-                        strTemp = aryUserMenuItems[0, 0, intNum, 0];
+                        strTemp = Modules.clsView.aryUserMenuItems[0, 0, intNum, 0];
 
-                        if (MNUFind.Text == aryUserMenuItems[0, 0, intNum, 0])
+                        if (MNUFind.Text == Modules.clsView.aryUserMenuItems[0, 0, intNum, 0])
                         {
                             blnCont = false;
                             break;
@@ -176,8 +156,8 @@ namespace RogStock2025.Screens
                     if (blnCont)
                     {
                         MNUTemp = new ToolStripMenuItem();
-                        MNUTemp.Text = aryUserMenuItems[0, 0, intNum, 0];
-                        MNUTemp.Tag = aryUserMenuItems[0, 0, 0, intNum]; //object name
+                        MNUTemp.Text = Modules.clsView.aryUserMenuItems[0, 0, intNum, 0];
+                        MNUTemp.Tag = Modules.clsView.aryUserMenuItems[0, 0, 0, intNum]; //object name
                         MNUTemp.Click += MenuClickEvent;
                         MNUTemp.ForeColor = Color.White;
                         this.MNUForms.DropDownItems.Add(MNUTemp);
@@ -185,14 +165,14 @@ namespace RogStock2025.Screens
                 }
 
                 //get operations
-                if (aryUserMenuItems[0, intNum, 0, 0] == "Operation" && aryUserMenuItems[intNum, 0, 0, 0] == ((Button)sender).Text)
+                if (Modules.clsView.aryUserMenuItems[0, intNum, 0, 0] == "Operation" && Modules.clsView.aryUserMenuItems[intNum, 0, 0, 0] == ((Button)sender).Text)
                 {
                     //make sure does not already exist!
                     foreach (ToolStripMenuItem MNUFind in this.MNUOperations.DropDownItems)
                     {
-                        strTemp = aryUserMenuItems[0, 0, intNum, 0];
+                        strTemp = Modules.clsView.aryUserMenuItems[0, 0, intNum, 0];
 
-                        if (MNUFind.Text == aryUserMenuItems[0, 0, intNum, 0])
+                        if (MNUFind.Text == Modules.clsView.aryUserMenuItems[0, 0, intNum, 0])
                         {
                             blnCont = false;
                             break;
@@ -202,8 +182,8 @@ namespace RogStock2025.Screens
                     if (blnCont)
                     {
                         MNUTemp = new ToolStripMenuItem();
-                        MNUTemp.Text = aryUserMenuItems[0, 0, intNum, 0];
-                        MNUTemp.Tag = aryUserMenuItems[0, 0, 0, intNum]; //object name
+                        MNUTemp.Text = Modules.clsView.aryUserMenuItems[0, 0, intNum, 0];
+                        MNUTemp.Tag = Modules.clsView.aryUserMenuItems[0, 0, 0, intNum]; //object name
                         MNUTemp.Click += MenuClickEvent;
                         MNUTemp.ForeColor = Color.White;
                         this.MNUOperations.DropDownItems.Add(MNUTemp);
@@ -211,14 +191,14 @@ namespace RogStock2025.Screens
                 }
 
                 //get reports
-                if (aryUserMenuItems[0, intNum, 0, 0] == "Report" && aryUserMenuItems[intNum, 0, 0, 0] == ((Button)sender).Text)
+                if (Modules.clsView.aryUserMenuItems[0, intNum, 0, 0] == "Report" && Modules.clsView.aryUserMenuItems[intNum, 0, 0, 0] == ((Button)sender).Text)
                 {
                     //make sure does not already exist!
                     foreach (ToolStripMenuItem MNUFind in this.MNUReports.DropDownItems)
                     {
-                        strTemp = aryUserMenuItems[0, 0, intNum, 0];
+                        strTemp = Modules.clsView.aryUserMenuItems[0, 0, intNum, 0];
 
-                        if (MNUFind.Text == aryUserMenuItems[0, 0, intNum, 0])
+                        if (MNUFind.Text == Modules.clsView.aryUserMenuItems[0, 0, intNum, 0])
                         {
                             blnCont = false;
                             break;
@@ -228,8 +208,8 @@ namespace RogStock2025.Screens
                     if (blnCont)
                     {
                         MNUTemp = new ToolStripMenuItem();
-                        MNUTemp.Text = aryUserMenuItems[0, 0, intNum, 0];
-                        MNUTemp.Tag = aryUserMenuItems[0, 0, 0, intNum]; //object name
+                        MNUTemp.Text = Modules.clsView.aryUserMenuItems[0, 0, intNum, 0];
+                        MNUTemp.Tag = Modules.clsView.aryUserMenuItems[0, 0, 0, intNum]; //object name
                         MNUTemp.Click += MenuClickEvent;
                         MNUTemp.ForeColor = Color.White;
                         this.MNUReports.DropDownItems.Add(MNUTemp);
@@ -242,6 +222,9 @@ namespace RogStock2025.Screens
             this.MNUForms.Visible = Modules.clsView.HasUserAccessToForms(((Button)sender).Text);
             this.MNUOperations.Visible = Modules.clsView.HasUserAccessToOperations(((Button)sender).Text);
             this.MNUReports.Visible = Modules.clsView.HasUserAccessToReports(((Button)sender).Text);
+
+            //set main mneu lblcycle with choice
+            this.LBLCycle.Text = "Current Area: " + ((Button)sender).Text;
         }
 
         private void SetFormColour()
@@ -250,7 +233,7 @@ namespace RogStock2025.Screens
 
                   Created 19/08/2025 By Roger Williams
            
-                  Taken off the internet sets MDI parent back colour!
+                  Taken off the internet sets MDI child back colour!
 
             */
 
@@ -278,11 +261,9 @@ namespace RogStock2025.Screens
 
                   Created 05/08/2025 By Roger Williams
 
-                  Gets list of AlL menu items user has access too then creates the section/menu items for them  
-                  in: PANSections
-
-                  as a series of buttons whose caption is the area e.g.: Inventory
-                  the user menu items data is stored in an array: aryUserMenuItems, this contains:
+                  Gets list of ALL menu items user has access too then creates the area menu items for them in: PANSections
+                  as a series of buttons whose caption is the area e.g.: Inventory. The user menu items data is stored in an array: aryUserMenuItems
+                  this contains:
 
                   area            (e.g. Inventory)    
                   type            (e.g. Form/Report)
@@ -374,9 +355,6 @@ namespace RogStock2025.Screens
                     intPANSectionsheight = this.PANSections.Height;
                     //"hide" PANSections
                     this.PANSections.Height = 0;
-                    //activate form timer for animation
-                    this.TMRMenu.Enabled = true;
-
                 }
             }
             catch (Exception ex)
@@ -443,54 +421,87 @@ namespace RogStock2025.Screens
             this.BTNExit.FlatAppearance.MouseOverBackColor = Color.DeepSkyBlue;
         }
 
-        //*******form events*******
-        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+
+        private bool CheckFolders()
         {
             /*
-                   Created 17/02/2025 By Roger Williams
+                   Created 04/03/2026 By Roger Williams
 
-
-                   
+                   checks if resource/mailshots folders exist if not creates them
+                   if resources folder does not exist creates the errorslist.res file
+                  
+                
+                   returns TRUE if no folders exist
             */
-            Modules.clsData.DeleteCurrentLoginRecord();
+            bool blnOk = true;
+ 
+
+            if (!Directory.Exists(Modules.clsData.CNST_STR_INSTALLATIONPATH))
+            {
+                Directory.CreateDirectory(Modules.clsData.CNST_STR_INSTALLATIONPATH);
+                blnOk = false;
+            }
+
+
+            //if (!Directory.Exists(Modules.clsData.CNST_STR_REPORTSPATH))
+            //{
+            //    Directory.CreateDirectory(Modules.clsData.CNST_STR_REPORTSPATH);
+            //}
+
+            if (!Directory.Exists(Modules.clsData.CNST_STR_RESOURCEPATH))
+            {
+                Directory.CreateDirectory(Modules.clsData.CNST_STR_RESOURCEPATH);
+                blnOk = false;
+
+                //create errorslist.res for SQL custom error handler
+                Modules.clsData.CreateCustomSQLErrorFile();
+                 //create default theme
+                Modules.clsData.CreateDefaultTheme();
+            }
+
+            //create mailshots folder - used when mailshots are imported via frmmailshots
+            if (!Directory.Exists(Modules.clsData.CNST_STR_MAILSHOTPATH))
+            {
+                Directory.CreateDirectory(Modules.clsData.CNST_STR_MAILSHOTPATH);
+                blnOk = false;
+            }
+
+
+            return blnOk;
         }
 
-        private void frmMain_Load(object sender, EventArgs e)
+        private void Init()
         {
             /*
-                   Created 13/02/2025 By Roger Williams
+                Created 17/02/2025 By Roger Williams
 
-                   Show login screen
+                creates system folders if missing
+                gets theme
+                inits SQL custom error handler
+                creates user login record
+                sets menu form/report/operations click events
+                sets mainmenu button/form colours
+                gets schema/key data
+                gets form labels/titles data
+                positions form top left of screen
 
             */
-            frmLogin frmTemp;
-            Rectangle RECTTemp;
-
-            //load theme
-            Modules.clsView.ReadThemeData();
-            //open login screen
-            frmTemp = new frmLogin();
-            frmTemp.ShowDialog();
-
-
+            //check if first run
+            if (CheckFolders())
+            {
+                //load theme
+                Modules.clsView.ReadThemeData();
+            }
             //init custom sql error data
-            if (!Modules.clsData.InitCustomErrorhandler(Modules.clsData.CNST_STR_SQLCUSTOMERRORSPATH))  // Path.GetDirectoryName(Application.ExecutablePath) + @"\Resources\Errorlist.res"))
+            if (!Modules.clsData.InitCustomErrorhandler(Modules.clsData.CNST_STR_SQLCUSTOMERRORSPATH))
             {
                 this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
                 this.Close();
             }
             else
-            { //@ <- 03/03/2026
-                //set main menu controls
-             //@   this.PANMenu.Height = 0;
-             //@   this.PANMenu.Top = 0;
-              //@  this.PANOptions.Height = 0;
-              //@  this.BTNShowHide.Top = 0;
-                //set custom paint events
-                //this.MNUForms.Paint += this.Custom_Paint;
-                //this.MNUReports.Paint += this.Custom_Paint;
-                //this.MNUOperations.Paint += this.Custom_Paint;
-                //this.MNUMainMenu.Paint += this.Custom_Paint;
+            {
+                //create record in login_current NOTE: this is temp code till we decide to ACTUALLY have logins
+                Modules.clsData.CreateCurrentLoginRecord("admin");
 
                 //configure main menu
                 CreateMainMenu();
@@ -502,18 +513,40 @@ namespace RogStock2025.Screens
                 SetButtonColours();
                 //set form colour
                 SetFormColour();
-                //get sql table schemas into dictionary
-                Modules.clsData.GetSQLSchema();
+                //get sql table keys into dictionary
+                Modules.clsTables.GetSQLSchemaTableKeys();
+                //get sql table data into list
+                Modules.clsTables.GetSchemaData();
+                //read form labels/title data into list of typLabels
+                Modules.clsTables.GetFormTitles();
                 //position form
                 this.Top = 0;
                 this.Left = 0;
 
                 //set "underline" width
-                this.PANLine.Width=this.Width-this.BTNShowHide.Width;
-                //@         RECTTemp = Screen.PrimaryScreen.Bounds;
-                //@         this.Width = RECTTemp.Width;
-                //@         this.Height = RECTTemp.Height;
+                this.PANLine.Width = this.Width - this.BTNShowHide.Width;
+                //start hide/show colour change
+                this.TMRShowHide.Enabled = true;
             }
+        }
+
+
+
+        //********form events etc**
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            Init();   
+        }
+
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            /*
+                   Created 17/02/2025 By Roger Williams
+
+
+                   
+            */
+            Modules.clsData.DeleteCurrentLoginRecord();
         }
 
         //other form events
@@ -535,7 +568,7 @@ namespace RogStock2025.Screens
 
 
             */
-            this.Close();
+            Application.Exit();
         }
 
 
@@ -545,7 +578,7 @@ namespace RogStock2025.Screens
             /*
                Created 26/06/2025 By Roger Williams
 
-               shows hides the main menu controls
+               shows/hides the main menu controls by adjusting the height of: PANSections
                
 
             */
@@ -554,33 +587,10 @@ namespace RogStock2025.Screens
             int intNum = 0;
 
             blnShowMenu = !blnShowMenu;
-            /*
-      
-            menu panel defaults
-
-            x: 0
-            y: 0
-            h: 50
-            
-            sectiion panel defaults
-
-            x: 1
-            y: 60
-            h: 230
-
-            */
-
 
             //process
             if (blnShowMenu)
             {
-                //for (intNum = 0; intNum != 58; intNum++)
-                //{
-                //    this.PANMenu.Height++;
-                //    this.PANMenu.Update();
-                //    this.PANOptions.Height++;
-                //    this.PANOptions.Update();
-                //}
                 for (intNum = 0; intNum != intPANSectionsheight; intNum++)
                 {
                     this.PANSections.Height++;
@@ -589,16 +599,11 @@ namespace RogStock2025.Screens
 
                 //remove button border
                 this.BTNShowHide.FlatAppearance.BorderSize = 0;
+                //set tag to 1
+                this.BTNShowHide.Tag = 1;
             }
             else
             {
-                //for (intNum = 0; intNum != 58; intNum++)
-                //{
-                //    this.PANMenu.Height--;
-                //    this.PANMenu.Update();
-                //    this.PANOptions.Height--;
-                //    this.PANOptions.Update();
-                //}
                 for (intNum = 0; intNum != intPANSectionsheight; intNum++)
                 {
                     this.PANSections.Height--;
@@ -607,6 +612,8 @@ namespace RogStock2025.Screens
 
                 //reset button border
                 this.BTNShowHide.FlatAppearance.BorderSize = 1;
+                //set tag to 0
+                this.BTNShowHide.Tag = 0;
             }
         }
 
@@ -614,15 +621,15 @@ namespace RogStock2025.Screens
         {
             Graphics graTemp = e.Graphics;
             GraphicsState state = graTemp.Save();  //save state
-            Brush bruTemp = null;
+  
 
             graTemp.ResetTransform();
 
-            // Rotate.
+            // Rotate 90 for button text
             graTemp.RotateTransform(90);
 
             // Translate to desired position. Be sure to append
-            // the rotation so it occurs after the rotation.
+            // so it occurs after the rotation.
             graTemp.TranslateTransform(27, 8, MatrixOrder.Append);
 
             switch (intColourSwap)
@@ -671,34 +678,73 @@ namespace RogStock2025.Screens
             */
             e.SuppressKeyPress = true;
         }
-        private void TMRMenu_Tick(object sender, EventArgs e)
+
+        private void MNUCascade_Click(object sender, EventArgs e)
         {
+            //Note: below only works when form has border!
+            //this.LayoutMdi(MdiLayout.Cascade);
+            Modules.clsView.ArrangeChildForms(this,1);   
+        }
+
+        private void MNUHorizontal_Click(object sender, EventArgs e)
+        {
+            //  this.LayoutMdi(MdiLayout.TileHorizontal);
+            Modules.clsView.ArrangeChildForms(this, 2);
+        }
+
+        private void MNUVertical_Click(object sender, EventArgs e)
+        {
+            //  this.LayoutMdi(MdiLayout.TileVertical);
+            Modules.clsView.ArrangeChildForms(this, 3);
+        }
+
+        private void PICClose_Click(object sender, EventArgs e)
+        {
+            BTNExit_Click(sender, e);
+        }
+
+        private void PANTitle_MouseDown(object sender, MouseEventArgs e)
+        {
+            blnDragging = true;
+            pntLastLocation = e.Location;
+        }
+
+        private void PANTitle_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (blnDragging)
+            {
+                this.Location = new Point(
+                (this.Location.X - pntLastLocation.X) + e.X,
+                (this.Location.Y - pntLastLocation.Y) + e.Y);
+
+                this.Update();
+            }
+        }
+
+        private void PANTitle_MouseUp(object sender, MouseEventArgs e)
+        {
+            blnDragging = false;
+        }
+
+        private void TMRShowHide_Tick(object sender, EventArgs e)
+        {
+            /*
+               Created 26/06/2025 By Roger Williams
+
+               changes btnshowhide colour
+
+               Note: due to strange issue with .Net cant replace this with an async function..?
+               
+
+            */
+
+            Task.Delay(1000);
             //swap menu show button text colour
             intColourSwap++;
             this.BTNShowHide.Refresh();
         }
 
 
-        private void MNUCascade_Click(object sender, EventArgs e)
-        {
-            this.LayoutMdi(MdiLayout.Cascade);
-        }
-
-        private void MNUHorizontal_Click(object sender, EventArgs e)
-        {
-            this.LayoutMdi(MdiLayout.TileHorizontal);
-        }
-
-        private void MNUVertical_Click(object sender, EventArgs e)
-        {
-            this.LayoutMdi(MdiLayout.TileVertical);
-        }
-
-        private void PICClose_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        //class end
+        //***end class
     }
 }
