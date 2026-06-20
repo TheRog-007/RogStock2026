@@ -16,13 +16,24 @@ latest version of the project
 - UOM
 - Product families
 - Location renaming
+- Uses the RogEngine a low code framework for database applications features include:
+  - fully working main menu
+  - main menu security
+  - configurable main menu security levels
+  - API for read/writing to tables
+  - complete schema system support
+  - login system
+  - SQl Server native
+  - user login management
+  - populates labels on data entry screens with human friendly desciptions at runtime e.g. label1 becomes: Item ID
+  - local customisable theme with dynamic preview
 
 **Additions For This Version Include:**
 - FULL transaction history for everything! (ISO9001)
 - Purchasing system with:
   = Purchase orders -> lines -> delivery dates etc
-  = PO inspect
-  = PO receipt
+  = PO inspect <- in development
+  = PO receipt <- in development
   = Vendors
   = Vendor billing addresses e.g. buy from branch pay head office
 
