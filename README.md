@@ -27,6 +27,8 @@ latest version of the project
   - user login management
   - populates labels on data entry screens with human friendly desciptions at runtime e.g. label1 becomes: Item ID
   - local customisable theme with dynamic preview
+  - transaction log system
+  - bespoke SQl Server error system for custom errors
 
 **Additions For This Version Include:**
 - FULL transaction history for everything! (ISO9001)
