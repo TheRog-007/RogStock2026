@@ -1,4 +1,4 @@
-#RogStock 2026
+RogStock 2026
 --
 
 Revison of the simple stock system written in C#
